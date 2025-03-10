@@ -1,264 +1,220 @@
-<!DOCTYPE HTML>
-<html>
 
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<link rel="bookmark"  type="image/x-icon"  href="/img/logo_miccall.png"/>
-	<link rel="shortcut icon" href="/img/logo_miccall.png">
-	
-			    <title>
-    SharlotAway's Code Space
-    </title>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="/css/mic_main.css" />
-    <link rel="stylesheet" href="/css/dropdownMenu.css" />
-    <meta name="keywords" content="miccall" />
-    
-    	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-	 
-    <noscript>
-        <link rel="stylesheet" href="/css/noscript.css" />
-    </noscript>
-    <style type="text/css">
-        body:before {
-          content: ' ';
-          position: fixed;
-          top: 0;
-          background: url('//img/Yoimiya-Wish-Art.jpg') center 0 no-repeat;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          background-size: cover; 
-        }
-    </style>
+    <title>helloworld | SharlotAway&#39;s Code Space</title>
+    <meta name="author" content="Sharlot Away" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/images/avatar.jpg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.cn" />
+<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
 
-			    
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script async type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
+<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
 
 
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/jquery.scrollex.min.js"></script>
-    <script src="/js/jquery.scrolly.min.js"></script>
-    <script src="/js/skel.min.js"></script>
-    <script src="/js/util.js"></script>
-    <script src="/js/main.js"></script>
-	
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
 <meta name="generator" content="Hexo 7.3.0"></head>
-    
-		
-<!-- Layouts -->
-
-
-
-<!--  代码渲染  -->
-<link rel="stylesheet" href="/css/prism_coy.css" />
-<link rel="stylesheet" href="/css/typo.css" />
-<!-- 文章页 -->
-<body class="is-loading">
-    <!-- Wrapper 外包 s-->
-    <div id="wrapper" class="fade-in">
-        <!-- Intro 头部显示 s -->
-        <!-- Intro 头部显示 e -->
-        <!-- Header 头部logo start -->
-        <header id="header">
-    <a href="/" class="logo">SharlotAway</a>
-</header>
-        <!-- Nav 导航条 start -->
-        <nav id="nav" class="special" >
-            <ul class="menu links" >
-			<!-- Homepage  主页  --> 
-			<li >
-	            <a href="/" rel="nofollow">主页</a>
-	        </li>
-			<!-- categories_name  分类   --> 
-	        
-	        <li class="active">
-	            <a href="#s1">分类</a>
-	                    <ul class="submenu">
-	                        <li>
-	                        
-	                    </ul>
-	        </li>
-	        
-	        <!-- archives  归档   --> 
-	        
-	        
-		        <!-- Pages 自定义   -->
-		        
-		        <li>
-		            <a href="/about/" title="简历">
-		                简历
-		            </a>
-		        </li>
-		        
-		        <li>
-		            <a href="/group/" title="团队">
-		                团队
-		            </a>
-		        </li>
-		        
-		        <li>
-		            <a href="/gallery/" title="图库">
-		                图库
-		            </a>
-		        </li>
-		        
-		        <li>
-		            <a href="/tag/" title="标签">
-		                标签
-		            </a>
-		        </li>
-		        
-
-
-            </ul>
-            <!-- icons 图标   -->
-			<ul class="icons">
-                    
-                    <li>
-                        <a title="github" href="https://github.com/SharlotAway" target="_blank" rel="noopener">
-                            <i class="icon fa fa-github"></i>
-                        </a>
-                    </li>
-                    
-                    <li>
-                        <a title="500px" href="http://500px.com" target="_blank" rel="noopener">
-                            <i class="icon fa fa-500px"></i>
-                        </a>
-                    </li>
-                    
-			</ul>
-</nav>
-
-        <div id="main" >
-            <div class ="post_page_title_img" style="height: 25rem;background-image: url();background-position: center; background-repeat:no-repeat; background-size:cover;-moz-background-size:cover;overflow:hidden;" >
-                <a href="#" style="padding: 4rem 4rem 2rem 4rem ;"><h2 >helloworld</h2></a>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/images/loading.gif" />
+                </div>
             </div>
-            <!-- Post -->
-            <div class="typo" style="padding: 3rem;">
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>SHARLOTAWAY&#39;S CODE SPACE</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;SHARLOTAWAY&#39;S CODE SPACE</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
                 
             </div>
-
-            <!-- Post Comments -->
-            
-    <!-- 使用 DISQUS_CLICK -->
-<div id="disqus-comment">
-    <div id="disqus_thread"></div>
-
-<!-- add animation -->
-<style>
-	.disqus_click_btn {
-            line-height: 30px;
-            margin: 0;
-            min-width: 50px;
-            padding: 0 14px;
-            display: inline-block;
-            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-            font-size: 14px;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 0;
-            overflow: hidden;
-            will-change: box-shadow;
-            transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
-            outline: 0;
-            cursor: pointer;
-            text-decoration: none;
-            text-align: center;
-            vertical-align: middle;
-            border: 0;
-            background: rgba(158, 158, 158, .2);
-            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
-            color: #fff;
-            background-color: #7EC0EE;
-            text-shadow: 0
-        }
-</style>
-	
-<div class="btn_click_load" id="disqus_bt"> 
-    <button class="disqus_click_btn">点击查看评论</button>
+        </transition>
+    </nav>
 </div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
 
-<!--
-<script type="text/javascript">
-$('.btn_click_load').click(function() {
-    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-    var disqus_shortname = 'http-miccall-tech'; // required: replace example with your forum shortname
-
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-
-    document.getElementById('disqus_bt').style.display = "none";
-});
-</script>
--->
-<script type="text/javascript">
-    var disqus_config = function () {
-        this.page.url = 'http://example.com/helloworld/index.html';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = 'http://example.com/helloworld/index.html'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-</script>
-
-<script type="text/javascript">
-    $('.btn_click_load').click(function() {  //click to load comments
-        (function() { // DON'T EDIT BELOW THIS LINE
-            var d = document;
-            var s = d.createElement('script');
-            s.src = '//http-miccall-tech.disqus.com/embed.js';
-            s.setAttribute('data-timestamp', + new Date());
-            (d.head || d.body).appendChild(s);
-        })();
-        $('.btn_click_load').css('display','none');
-    });
-</script>
-</div>
-<style>
-    #disqus-comment{
-        background-color: #eee;
-        padding: 2pc;
-    }
-</style>
-
-
-        </div>
-        <!-- Copyright 版权 start -->
-                <div id="copyright">
-            <ul>
-                <li>&copy;Powered By <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/" style="border-bottom: none;">hexo</a></li>
-                <li>Design: <a target="_blank" rel="noopener" href="http://miccall.tech " style="border-bottom: none;">miccall</a></li>
-            </ul>
-            
-                <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
-			
-        </div>
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>helloworld</h1>
     </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2025/3/10
+        </span>
+        
+        
+    </div>
+    
+    <div class="content" v-pre>
+        
+    </div>
+    
+    
+    
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2025 SharlotAway&#39;s Code Space
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;Sharlot Away
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+    
+
+
+
+
+    
 </body>
-
-
-
- 	
 </html>
