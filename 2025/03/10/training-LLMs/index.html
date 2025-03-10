@@ -3,7 +3,7 @@
 <html lang="Zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>SharlotAway</title>
+    <title>training LLMs | SharlotAway</title>
     <meta name="author" content="Sharlot Away" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -42,7 +42,9 @@
 
 
 
-<script src="/js/lib/home.js"></script>
+
+
+
 
 <link rel="stylesheet" href="/css/main.css" />
 
@@ -152,40 +154,11 @@
 </transition>
 
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-            <div id="home-head">
-    <div
-        id="home-background"
-        ref="homeBackground"
-        data-images="/images/bg_furina.jpg"
-    ></div>
-    <div id="home-info" @click="homeClick">
-        <span class="loop"></span>
-        <span class="loop"></span>
-        <span class="loop"></span>
-        <span class="loop"></span>
-        <span class="info">
-            <div class="wrap">
-                <h1>SharlotAway</h1>
-                <h3></h3>
-                <h5></h5>
-            </div>
-        </span>
+            <div class="article">
+    <div>
+        <h1>training LLMs</h1>
     </div>
-</div>
-<div
-    id="home-posts-wrap"
-    ref="homePostsWrap"
-    true
->
-    <div id="home-posts">
-        
-
-<div class="post">
-    <a href="/2025/03/10/training-LLMs/">
-        <h2 class="post-title">training LLMs</h2>
-    </a>
-    <div class="category-and-date">
-        
+    <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
@@ -194,11 +167,25 @@
         </span>
         
         
-    </div>
-    <div class="description">
-        <div class="content" v-pre>
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
             
-            <h1 id="大模型预训练"><a href="#大模型预训练" class="headerlink" title="大模型预训练"></a>大模型预训练</h1><h2 id="从-Huggingface-上下载并使用大模型"><a href="#从-Huggingface-上下载并使用大模型" class="headerlink" title="从 Huggingface 上下载并使用大模型"></a>从 Huggingface 上下载并使用大模型</h2><p>使用从 HuggingFace 下载的大模型（例如 Qwen2）并预训练需要以下步骤：</p>
+            
+            <span class="tag">
+                
+                <a href="/tags/LLMs/" style="color: #00bcd4">
+                    LLMs
+                </a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h1 id="大模型预训练"><a href="#大模型预训练" class="headerlink" title="大模型预训练"></a>大模型预训练</h1><h2 id="从-Huggingface-上下载并使用大模型"><a href="#从-Huggingface-上下载并使用大模型" class="headerlink" title="从 Huggingface 上下载并使用大模型"></a>从 Huggingface 上下载并使用大模型</h2><p>使用从 HuggingFace 下载的大模型（例如 Qwen2）并预训练需要以下步骤：</p>
 <ul>
 <li>加载模型、分词器，并移动到指定设别（GPU）上；</li>
 <li>输入提示词（Prompt）及其模板，并使用分词器转换为输入序号序列；</li>
@@ -223,103 +210,13 @@
 <p>训练使用 <code>Trainer</code> 类的对象，传入模型和一些参数，可与 <code>accelerator</code> 兼容，实现分布式训练。</p>
 <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>本章仅用于测试，后续内容有待更新。</p>
 
-            
-        </div>
     </div>
-    <div class="post-tags">
-        
-        <span class="icon">
-            <i class="fa-solid fa-tags fa-fw"></i>
-        </span>
-        
-        
-        
-        <span class="tag">
-            
-            <a href="/tags/LLMs/" style="color: #03a9f4">LLMs</a>
-        </span>
-        
-    </div>
-    <a href="/2025/03/10/training-LLMs/" class="go-post">阅读全文</a>
-</div>
-
-<div class="post">
-    <a href="/2025/03/10/Hello-world/">
-        <h2 class="post-title">Hello, world!</h2>
-    </a>
-    <div class="category-and-date">
-        
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2025/3/10
-        </span>
-        
-        
-    </div>
-    <div class="description">
-        <div class="content" v-pre>
-            
-            <p>The first blog, hey hey hey.</p>
-
-            
-        </div>
-    </div>
-    <div class="post-tags">
-        
-        <span class="icon">
-            <i class="fa-solid fa-tags fa-fw"></i>
-        </span>
-        
-        
-        
-        <span class="tag">
-            
-            <a href="/tags/Introduction/" style="color: #ffa2c4">Introduction</a>
-        </span>
-        
-    </div>
-    <a href="/2025/03/10/Hello-world/" class="go-post">阅读全文</a>
-</div>
-
-
-        <div class="page-current">
     
-    <span class="current">1</span>
     
     
     
     
-</div>
-
-    </div>
     
-    <div id="home-card">
-        <div id="card-style">
-    <div id="card-div">
-        <div class="avatar">
-            <img src="/images/avatar_f.jpg" alt="avatar" />
-        </div>
-        <div class="name">Sharlot Away</div>
-        <div class="description">
-            <p>这个人很懒，什么都没有留下…<br>中南大学硕士研究生在读<br>work email: <a href="mailto:&#97;&#x77;&#97;&#121;&#x5f;&#122;&#104;&#x61;&#110;&#103;&#50;&#x30;&#x30;&#51;&#x40;&#x31;&#x36;&#x33;&#46;&#99;&#x6f;&#x6d;">&#97;&#x77;&#97;&#121;&#x5f;&#122;&#104;&#x61;&#110;&#103;&#50;&#x30;&#x30;&#51;&#x40;&#x31;&#x36;&#x33;&#46;&#99;&#x6f;&#x6d;</a><br>qq: 2402003093</p>
-
-        </div>
-        
-        
-        <div class="friend-links">
-            
-            <div class="friend-link">
-                <a target="_blank" rel="noopener" href="https://argvchs.github.io">Theme Argvchs</a>
-            </div>
-            
-        </div>
-        
-    </div>
-</div>
-
-    </div>
     
 </div>
 
@@ -351,6 +248,12 @@
         
     </div>
     <script src="/js/main.js"></script>
+    
+    
+
+
+
+
     
 </body>
 </html>
