@@ -175,7 +175,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/LLMs/" style="color: #00bcd4">
+                <a href="/tags/LLMs/" style="color: #ffa2c4">
                     LLMs
                 </a>
             </span>
@@ -193,22 +193,19 @@
 </ul>
 <pre><code class="python">from transformers import AutoModelForCausalLM, AutoTokenizer
 device = &quot;cuda&quot; # the device to load the model onto
-
+# 加载模型
 model = AutoModelForCausalLM.from_pretrained(&quot;Qwen/Qwen2-7B-Instruct&quot;, device_map=&quot;auto&quot;)
 tokenizer = AutoTokenizer.from_pretrained(&quot;Qwen/Qwen2-7B-Instruct&quot;)
-
+# 添加提示词
 prompt = &quot;Give me a short introduction to large language model.&quot;
-
 messages = [&#123;&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: prompt&#125;]
-
+# 将输入进行分词，并转化成词表序号
 text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-
 model_inputs = tokenizer([text], return_tensors=&quot;pt&quot;).to(device)
-
+# 通过输入得到输出ids
 generated_ids = model.generate(model_inputs.input_ids, max_new_tokens=512, do_sample=True)
-
 generated_ids = [output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)]
-
+# 解码，生成回复
 response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
 </code></pre>
 <h2 id="训练时的损失计算"><a href="#训练时的损失计算" class="headerlink" title="训练时的损失计算"></a>训练时的损失计算</h2><p>Loss 计算：Next-Token Prediction，在每一个 token 的位置输出下一个 token 的概率，以 Llama 模型为例，计算损失的代码如下：</p>

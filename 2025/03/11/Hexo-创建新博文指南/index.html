@@ -3,7 +3,7 @@
 <html lang="Zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>Archives | SharlotAway</title>
+    <title>Hexo 创建新博文指南 | SharlotAway</title>
     <meta name="author" content="Sharlot Away" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -37,6 +37,10 @@
 
 
 <script src="/js/lib/preview.js"></script>
+
+
+
+
 
 
 
@@ -150,99 +154,79 @@
 </transition>
 
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>Hexo 创建新博文指南</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2025/3/11
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
             
-<div id="archives">
-    
-    <div id="timeline-wrap" ref="timeline">
-        
-        <div class="timeline" data-title="hello,world!">
-            <div class="timeline-tail"></div>
-            <div class="timeline-content">
-                <div class="item-time">2025/3/10</div>
-                <a href="/2025/03/10/Hello-world/">
-                    <h3>Hello, world!</h3>
+            
+            <span class="tag">
+                
+                <a href="/tags/Introduciton/" style="color: #ffa2c4">
+                    Introduciton
                 </a>
-                <div class="info">
-                    
-                    
-                    <span class="tags">
-                        <span class="icon">
-                            <i class="fa-solid fa-tags fa-fw"></i>
-                        </span>
-                        
-                        
-                        <span class="tag">
-                            
-                            <a href="/tags/Introduction/" style="color: #ff7d73">
-                                Introduction
-                            </a>
-                        </span>
-                        
-                    </span>
-                    
-                </div>
-            </div>
-        </div>
-        
-        <div class="timeline" data-title="huggingface大模型入门">
-            <div class="timeline-tail"></div>
-            <div class="timeline-content">
-                <div class="item-time">2025/3/10</div>
-                <a href="/2025/03/10/training-LLMs/">
-                    <h3>HuggingFace 大模型入门</h3>
-                </a>
-                <div class="info">
-                    
-                    
-                    <span class="tags">
-                        <span class="icon">
-                            <i class="fa-solid fa-tags fa-fw"></i>
-                        </span>
-                        
-                        
-                        <span class="tag">
-                            
-                            <a href="/tags/LLMs/" style="color: #03a9f4">
-                                LLMs
-                            </a>
-                        </span>
-                        
-                    </span>
-                    
-                </div>
-            </div>
-        </div>
-        
-        <div class="timeline" data-title="hexo创建新博文指南">
-            <div class="timeline-tail"></div>
-            <div class="timeline-content">
-                <div class="item-time">2025/3/11</div>
-                <a href="/2025/03/11/Hexo-%E5%88%9B%E5%BB%BA%E6%96%B0%E5%8D%9A%E6%96%87%E6%8C%87%E5%8D%97/">
-                    <h3>Hexo 创建新博文指南</h3>
-                </a>
-                <div class="info">
-                    
-                    
-                    <span class="tags">
-                        <span class="icon">
-                            <i class="fa-solid fa-tags fa-fw"></i>
-                        </span>
-                        
-                        
-                        <span class="tag">
-                            
-                            <a href="/tags/Introduciton/" style="color: #00a596">
-                                Introduciton
-                            </a>
-                        </span>
-                        
-                    </span>
-                    
-                </div>
-            </div>
-        </div>
+            </span>
+            
+        </span>
         
     </div>
+    
+    <div class="content" v-pre>
+        <h2 id="使用命令行新建文章"><a href="#使用命令行新建文章" class="headerlink" title="使用命令行新建文章"></a>使用命令行新建文章</h2><p>进入命令行（<code>Win</code> + <code>R</code>，输入 cmd，点击回车），找到 <code>Blog</code> 所在的目录，使用如下命令新建博文。</p>
+<pre><code class="bash">hexo new &quot;新建文章&quot;
+</code></pre>
+<p>就会创建一个名为<code>新建文章.md</code>的文件，命令行提示。</p>
+<pre><code class="bash">INFO  Validating config
+INFO  Created: \Path\to\your\Blog\source\_posts\新建文章.md
+</code></pre>
+<p>此时可以看到在<code>source/_posts</code> 文件夹下多出一个<code>新建文章.md</code>，打开就可以使用标准 <code>markdown</code>进行编辑了。</p>
+<h2 id="调试和查看"><a href="#调试和查看" class="headerlink" title="调试和查看"></a>调试和查看</h2><p>在编辑好之后，使用<code>hexo</code>查看刚刚编辑好的博文。</p>
+<pre><code class="bash">hexo clean # 清理旧的文件
+hexo server # 允许你在本地查看生成的网站，进行调试
+</code></pre>
+<p>如果调试成功，就使用<code>hexo</code>推送博文。在部署之前需要配置好根目录和主题目录下的 <code>_config.yaml</code>文件以确保可以正常生成网页。</p>
+<pre><code class="bash">hexo clean
+hexo generate # 生成静态网站文件，将 Markdown 文件和其他资源转换为 HTML 文件。
+hexo deploy # 将生成的静态文件部署到指定的远程服务器或托管平台（如 GitHub Pages）。
+</code></pre>
+<h2 id="一些小问题"><a href="#一些小问题" class="headerlink" title="一些小问题"></a>一些小问题</h2><p>在 particlex 主题下，代码高亮和 <code>hexo</code> 的默认配置冲突，在根目录下的 <code>_config.yaml</code> 做出如下修改。</p>
+<pre><code class="yaml"># 旧版本
+highlight:
+    enable: false
+prismjs:
+    enable: false
+# 如果是 7.0.0+，去掉 highlight 和 prismjs
+syntax_highlighter:
+</code></pre>
+<p>在主题目录的配置文件<code>_config.yaml</code>中使用进行代码高亮的配置。</p>
+<pre><code class="yaml"># Highlight.js
+# https://highlightjs.org
+highlight:
+    enable: true
+    style: github
+</code></pre>
+
+    </div>
+    
+    
+    
+    
+    
+    
+    
 </div>
 
             <footer id="footer">
@@ -273,6 +257,12 @@
         
     </div>
     <script src="/js/main.js"></script>
+    
+    
+
+
+
+
     
 </body>
 </html>
