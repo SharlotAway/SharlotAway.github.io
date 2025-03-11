@@ -182,7 +182,7 @@
 
 <div class="post">
     <a href="/2025/03/10/training-LLMs/">
-        <h2 class="post-title">training LLMs</h2>
+        <h2 class="post-title">HuggingFace 大模型入门</h2>
     </a>
     <div class="category-and-date">
         
@@ -198,58 +198,7 @@
     <div class="description">
         <div class="content" v-pre>
             
-            <h1 id="大模型预训练"><a href="#大模型预训练" class="headerlink" title="大模型预训练"></a>大模型预训练</h1><h2 id="从-Huggingface-上下载并使用大模型"><a href="#从-Huggingface-上下载并使用大模型" class="headerlink" title="从 Huggingface 上下载并使用大模型"></a>从 Huggingface 上下载并使用大模型</h2><p>使用从 HuggingFace 下载的大模型（例如 Qwen2）并预训练需要以下步骤：</p>
-<ul>
-<li>加载模型、分词器，并移动到指定设别（GPU）上；</li>
-<li>输入提示词（Prompt）及其模板，并使用分词器转换为输入序号序列；</li>
-<li>使用模型生成对应输出，并用解码器解码得到文字输出。</li>
-</ul>
-<pre><code class="python">from transformers import AutoModelForCausalLM, AutoTokenizer
-device = &quot;cuda&quot; # the device to load the model onto
-
-model = AutoModelForCausalLM.from_pretrained(&quot;Qwen/Qwen2-7B-Instruct&quot;, device_map=&quot;auto&quot;)
-tokenizer = AutoTokenizer.from_pretrained(&quot;Qwen/Qwen2-7B-Instruct&quot;)
-
-prompt = &quot;Give me a short introduction to large language model.&quot;
-
-messages = [&#123;&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: prompt&#125;]
-
-text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-
-model_inputs = tokenizer([text], return_tensors=&quot;pt&quot;).to(device)
-
-generated_ids = model.generate(model_inputs.input_ids, max_new_tokens=512, do_sample=True)
-
-generated_ids = [output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)]
-
-response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
-</code></pre>
-<h2 id="训练时的损失计算"><a href="#训练时的损失计算" class="headerlink" title="训练时的损失计算"></a>训练时的损失计算</h2><p>Loss 计算：Next-Token Prediction，在每一个 token 的位置输出下一个 token 的概率，以 Llama 模型为例，计算损失的代码如下：</p>
-<pre><code class="python"># shift so that tokens &lt; n predict n
-shift_logits = logits[:, :-1, :].contiguous()
-shift_lables = labels[:, 1:].contiguous()
-# Flatten the tokens
-loss_fct = CrossEntropyLoss()
-shift_logits = shift_logits.view(-1, self.config.vocab_size)
-shift_labels = shift_labels.view(-1)
-# Enable model parallelism
-shift_labels = shift_lables.to(shift_logits.device)
-loss = loss_fct(shift_logits, shift_labels)
-</code></pre>
-<p>在这段代码中，<code>logits</code> 的形状是 <code>(batch_size, seq_len, vocab_size)</code>，意义是一个批次里每个序列中的每个位置的下一个元素预测（预测的结果是每个位置一个 logits，代表为词表中每个元素的概率）。在处理的时候，因为最后一个 token 是没有下一 token 的，所以移除 logits 的最后一个向量；同时为了让 label 和 logits 对齐，把第一个 label 去掉。</p>
-<p>第二步是把一个 batch 里的序列拼接起来，即在一个批次内展开，使用<code>.view()</code> 方法执行。&#x3D;&#x3D;为了将句子隔开，在大模型里面设置了 <BOS> 和 <EOS> 分别表示序列的开始和结束。&#x3D;&#x3D;</p>
-<ul>
-<li><code>shifted_logits.shape = (batch_size * (seq_len - 1), vocab_size)</code> 表示需要预测的每个 token 的下一 token 预测值；</li>
-<li><code>shifted_labels.shape = (batch_size * (seq_len - 1))</code> 表示上述所有需要预测的下一 token 的真实值。</li>
-</ul>
-<p>第三步是将这些向量移动到同一设备中。</p>
-<blockquote>
-<p>&#x3D;&#x3D;张量操作&#x3D;&#x3D;</p>
-<p><code>.view()</code> 操作是将张量变成指定的形状，如果输入参数有-1，则会根据实际向量的元素计算这个位置的大小（当然，只能有一个 -1）</p>
-<p><code>.contiguous()</code> 用于保持内存的连续性，防止出现内存错误。</p>
-</blockquote>
-<p>训练使用 <code>Trainer</code> 类的对象，传入模型和一些参数，可与 <code>accelerator</code> 兼容，实现分布式训练。</p>
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>本章仅用于测试，后续内容有待更新。</p>
+            <p>了解一下大模型的简单使用方法。</p>
 
             
         </div>
@@ -264,7 +213,7 @@ loss = loss_fct(shift_logits, shift_labels)
         
         <span class="tag">
             
-            <a href="/tags/LLMs/" style="color: #03a9f4">LLMs</a>
+            <a href="/tags/LLMs/" style="color: #ff7d73">LLMs</a>
         </span>
         
     </div>
@@ -304,7 +253,7 @@ loss = loss_fct(shift_logits, shift_labels)
         
         <span class="tag">
             
-            <a href="/tags/Introduction/" style="color: #00a596">Introduction</a>
+            <a href="/tags/Introduction/" style="color: #ff7d73">Introduction</a>
         </span>
         
     </div>
@@ -331,7 +280,7 @@ loss = loss_fct(shift_logits, shift_labels)
         </div>
         <div class="name">Sharlot Away</div>
         <div class="description">
-            <p>中南大学硕士研究生在读<br>work email: <a href="mailto:&#97;&#119;&#97;&#x79;&#x5f;&#x7a;&#x68;&#97;&#110;&#103;&#x32;&#x30;&#x30;&#51;&#x40;&#49;&#x36;&#x33;&#46;&#99;&#x6f;&#x6d;">&#97;&#119;&#97;&#x79;&#x5f;&#x7a;&#x68;&#97;&#110;&#103;&#x32;&#x30;&#x30;&#51;&#x40;&#49;&#x36;&#x33;&#46;&#99;&#x6f;&#x6d;</a><br>qq: 2402003093</p>
+            <p>中南大学硕士研究生在读<br>work email: <a href="mailto:&#x61;&#119;&#97;&#121;&#95;&#x7a;&#104;&#x61;&#x6e;&#103;&#x32;&#48;&#x30;&#x33;&#x40;&#x31;&#x36;&#x33;&#46;&#99;&#x6f;&#109;">&#x61;&#119;&#97;&#121;&#95;&#x7a;&#104;&#x61;&#x6e;&#103;&#x32;&#48;&#x30;&#x33;&#x40;&#x31;&#x36;&#x33;&#46;&#99;&#x6f;&#109;</a><br>qq: 2402003093</p>
 
         </div>
         
