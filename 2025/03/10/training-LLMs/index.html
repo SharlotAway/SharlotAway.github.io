@@ -175,7 +175,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/LLMs/" style="color: #00bcd4">
+                <a href="/tags/LLMs/" style="color: #ff7d73">
                     LLMs
                 </a>
             </span>
@@ -221,7 +221,7 @@ shift_labels = shift_lables.to(shift_logits.device)
 loss = loss_fct(shift_logits, shift_labels)
 </code></pre>
 <p>在这段代码中，<code>logits</code> 的形状是 <code>(batch_size, seq_len, vocab_size)</code>，意义是一个批次里每个序列中的每个位置的下一个元素预测（预测的结果是每个位置一个 logits，代表为词表中每个元素的概率）。在处理的时候，因为最后一个 token 是没有下一 token 的，所以移除 logits 的最后一个向量；同时为了让 label 和 logits 对齐，把第一个 label 去掉。</p>
-<p>第二步是把一个 batch 里的序列拼接起来，即在一个批次内展开，使用<code>.view()</code> 方法执行。&#x3D;&#x3D;为了将句子隔开，在大模型里面设置了 <BOS> 和 <EOS> 分别表示序列的开始和结束。&#x3D;&#x3D;</p>
+<p>第二步是把一个 batch 里的序列拼接起来，即在一个批次内展开，使用<code>.view()</code> 方法执行。&#x3D;&#x3D;为了将句子隔开，在大模型里面设置了 <BOS> 和 <EOS> 分别表示序列的开始和结束。&#x3D;&#x3D;</EOS></BOS></p>
 <ul>
 <li><code>shifted_logits.shape = (batch_size * (seq_len - 1), vocab_size)</code> 表示需要预测的每个 token 的下一 token 预测值；</li>
 <li><code>shifted_labels.shape = (batch_size * (seq_len - 1))</code> 表示上述所有需要预测的下一 token 的真实值。</li>
