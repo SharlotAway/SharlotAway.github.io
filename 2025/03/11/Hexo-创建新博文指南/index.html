@@ -175,7 +175,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/Introduction/" style="color: #ff7d73">
+                <a href="/tags/Introduction/" style="color: #ffa2c4">
                     Introduction
                 </a>
             </span>
@@ -218,6 +218,19 @@ highlight:
     enable: true
     style: github
 </code></pre>
+<h3 id="博文中插入图像"><a href="#博文中插入图像" class="headerlink" title="博文中插入图像"></a>博文中插入图像</h3><p>需要在站点目录下的 <code>_config.yaml</code> 加上一个 </p>
+<pre><code class="yaml">post_asset_folder: true
+marked:
+  prependRoot: true
+  postAsset: true
+</code></pre>
+<p>然后再安装一个插件</p>
+<pre><code class="bash">npm install https://github.com/CodeFalling/hexo-asset-image -- save
+</code></pre>
+<p>这样在 <code>hexo new</code> 的时候就会创建一个和博文同名的文件夹，用于存放图像。在 markdown 文件里用标准的插入图像命令 <code>![]()</code>即可。</p>
+<pre><code class="markdown">![](&lt;文章名&gt;/&lt;图像名&gt;)
+</code></pre>
+<p>切记，<code>[]</code>中是空的，不然会出错。</p>
 <h3 id="博文置顶"><a href="#博文置顶" class="headerlink" title="博文置顶"></a>博文置顶</h3><p>暂未解决。</p>
 
     </div>
