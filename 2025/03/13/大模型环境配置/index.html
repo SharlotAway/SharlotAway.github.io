@@ -3,7 +3,7 @@
 <html lang="Zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>环境配置 | SharlotAway</title>
+    <title>大模型环境配置 | SharlotAway</title>
     <meta name="author" content="Sharlot Away" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -156,7 +156,7 @@
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
             <div class="article">
     <div>
-        <h1>环境配置</h1>
+        <h1>大模型环境配置</h1>
     </div>
     <div class="info">
         <span class="date">
@@ -175,7 +175,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/Environment/" style="color: #00bcd4">
+                <a href="/tags/Environment/" style="color: #03a9f4">
                     Environment
                 </a>
             </span>
@@ -187,11 +187,11 @@
     <div class="content" v-pre>
         <h1 id="大模型运行环境配置"><a href="#大模型运行环境配置" class="headerlink" title="大模型运行环境配置"></a>大模型运行环境配置</h1><p>这篇文章介绍在运行大模型之前的配置，包括从 Windows 平台远程连接 Linux 服务器，CUDA 和 cudnn 配置以及 Anaconda 的配置。</p>
 <h2 id="0-VSCode配置远程连接"><a href="#0-VSCode配置远程连接" class="headerlink" title="0. VSCode配置远程连接"></a>0. VSCode配置远程连接</h2><p>安装 <code>VSCode</code> 中的<code>Remote-SSH</code> 扩展，修改<code>ssh</code> 配置文件（可以在 VSCode 中打开新页面，然后 <code>ctrl</code>+<code>shift</code>+<code>p</code> 选择连接到主机）</p>
-<p><img src="/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102162325268.png" alt="image-20241102162325268"></p>
+<p><img src="/./%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20241102162325268.png" alt="image-20241102162325268"></p>
 <p>选择“连接到主机”，可以看到已经连接过的主机以及添加和配置两个选项。</p>
-<p><img src="/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102162357675.png" alt="image-20241102162357675"></p>
+<p><img src="/./%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20241102162357675.png" alt="image-20241102162357675"></p>
 <p>可以“+添加新的 SSH 主机“，然后输入 按照提示格式输入<code>ssh &lt;User&gt;@&lt;HostName&gt;:&lt;Port&gt; -&lt;Host&gt;</code> 建立新的连接。</p>
-<p><img src="/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102162415763.png" alt="image-20241102162415763"></p>
+<p><img src="/./%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20241102162415763.png" alt="image-20241102162415763"></p>
 <p>新建完成后就会在配置文件中出现相应的内容，格式如下。如果要修改连接的名称，修改 <code>&lt;Host&gt;</code> 即可。</p>
 <pre><code class="bash">Host &lt;Host&gt;
   HostName &lt;HostName&gt;
@@ -210,9 +210,9 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh # Min
 bash Miniconda3-latest-Linux-x86_64.sh
 </code></pre>
 <p>运行脚本后，会出现用户协议的阅读，一直回车到出现 “yes” or “no” 的选项。可以在输入 yes 后的提示框中输入具体路径并用回车安装（必须是空路径）。直接回车就是默认路径。</p>
-<p><img src="/./%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102164123643.png" alt="image-20241102164123643"></p>
+<p><img src="/./%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20241102164123643.png" alt="image-20241102164123643"></p>
 <p>安装完选择是否用 conda 环境初始化，即用 conda base 环境替换 <code>$SHELL</code>。仅修改当前权限下的 <code>.bashrc</code>。输入 yes，再次打开命令行的时候最前面就会有一个 <code>(base)</code>。</p>
-<p><img src="/./%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AEassets/image-20241102164605317.png" alt="image-20241102164605317"></p>
+<p><img src="/./%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20241102164605317.png" alt="image-20241102164605317"></p>
 <p> 输入<code>conda --version</code> 检查安装是否成功。</p>
 <pre><code class="bash">conda --version
 # response
@@ -254,21 +254,21 @@ Required-by:
 </code></pre>
 <h2 id="2-配置CUDA、CUDNN"><a href="#2-配置CUDA、CUDNN" class="headerlink" title="2. 配置CUDA、CUDNN"></a>2. 配置CUDA、CUDNN</h2><p>CUDA 是用于并行计算，和 GPU 加速的计算平台和编程模型。cuDNN 主要用于深度神经网络（DNN）的训练和推理，提供了高性能的基本操作和优化，以加速深度学习任务。</p>
 <h3 id="2-1-下载并配置-cuda"><a href="#2-1-下载并配置-cuda" class="headerlink" title="2.1. 下载并配置 cuda"></a>2.1. 下载并配置 cuda</h3><p>使用 <code>nvidia-smi</code> 和 <code>nvcc -V</code> 检查 cuda 版本是否一致。在 <code>nvidia-smi</code> 中，通过 <code>CUDA Version: </code> 查看当前的 cuda 版本；在 <code>nvcc -V</code> 中可以在 <code>Cuda compilation tools, release</code> 后面查看 cuda 编辑器版本。发现版本不匹配。</p>
-<p><img src="/./%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102192847963.png" alt="image-20241102192847963"></p>
-<p><img src="/./%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102192859663.png" alt="image-20241102192859663"></p>
+<p><img src="/./%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20241102192847963.png" alt="image-20241102192847963"></p>
+<p><img src="/./%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20241102192859663.png" alt="image-20241102192859663"></p>
 <p>从 CUDA Toolkit Archive （<a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-toolkit-archive">官网链接</a>）下载相应的 CUDA Toolkit。根据电脑配置选择（操作系统、结构、分布、系统版本以及安装器类型）根据固定指令下载。以 Ubuntu 18.04 为例，进入 cuda 下载目录，运行以下命令：</p>
 <pre><code class="bash">wget https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda_11.8.0_520.61.05_linux.run  # 从互联网上下载 cuda 安装器
 bash cuda_11.8.0_520.61.05_linux.run  # 运行安装程序
 </code></pre>
 <p>运行安装程序，如果没有出现错误信息，等待一会会跳出用户协议，输入 accept 继续。</p>
-<p><img src="/./%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102192723385.png" alt="image-20241102192723385"></p>
+<p><img src="/./%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20241102192723385.png" alt="image-20241102192723385"></p>
 <p>下一步，去掉驱动器（Driver）前面的√，不更新驱动。</p>
-<p><img src="/./%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102193925338.png" alt="image-20241102193925338"></p>
+<p><img src="/./%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20241102193925338.png" alt="image-20241102193925338"></p>
 <p>出现权限问题，因为不是 rooter，所以无法在 <code>/usr/local/cuda-11.8</code> 安装 cuda，需要修改安装目录以及环境。</p>
-<p><img src="/./%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102193054618.png" alt="image-20241102193054618"></p>
+<p><img src="/./%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20241102193054618.png" alt="image-20241102193054618"></p>
 <pre><code class="bash">sh cuda_11.8.0_520.61.05_linux.run --installpath=path/to/your/cuda-11.8
 </code></pre>
-<p><img src="/./%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102194145786.png" alt="image-20241102194145786"></p>
+<p><img src="/./%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20241102194145786.png" alt="image-20241102194145786"></p>
 <p>安装完成，根据提示添加环境变量。以下是命令：</p>
 <pre><code class="bash"># add PATH &amp; LD_LIBRARY_PATH
 export CUDA_HOME=/path/to/your/cuda-11.8
@@ -280,14 +280,14 @@ export PATH=$CUDA_HOME/lib64:$PATH
 cuda-11.8/bin/cuda-uninstaller
 </code></pre>
 <h3 id="2-2-下载并配置-cuDNN"><a href="#2-2-下载并配置-cuDNN" class="headerlink" title="2.2. 下载并配置 cuDNN"></a>2.2. 下载并配置 cuDNN</h3><p>cuDNN 下载网址（<a target="_blank" rel="noopener" href="https://developer.nvidia.com/rdp/cudnn-archive">网页链接</a>），选择与 cuda 匹配的版本进行下载。下载 cuDNN 需要用邮箱在NVIDIA官网（<a target="_blank" rel="noopener" href="https://developer.nvidia.com/login">官网链接</a>）注册一个账户。如果直接使用 <code>wget</code> 下载会得到一个 <code>index.html</code> 文件。因此在本地下载后通过 Remote SSH 传入服务器。</p>
-<p><img src="/./%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102191433513.png" alt="image-20241102191433513"></p>
+<p><img src="/./%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20241102191433513.png" alt="image-20241102191433513"></p>
 <p>成功上传服务器后解压文件。</p>
 <pre><code class="bash"># in your upload path
 unxz cudnn-linux-x86_64-8.9.7.29_cuda11-archive.tar.xz # remove xz
 tar -xvf cudnn-linux-x86_64-8.9.7.29_cuda11-archive.tar.xz # unzip
 </code></pre>
 <p>解压完成后会得到相应的文件夹。</p>
-<p><img src="/./%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102203027930.png" alt="image-20241102203027930"></p>
+<p><img src="/./%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20241102203027930.png" alt="image-20241102203027930"></p>
 <p>安装好之后将对应的 cudnn 文件加入 cuda 文件夹中即可插入使用。</p>
 <pre><code class="bash">CUDA_BASE=&quot;/path/to/your/cuda&quot;
 cp include/cudnn*.h $&#123;CUDA_BASE&#125;/cuda-11.8/include/
@@ -298,7 +298,7 @@ chmod a+r $&#123;CUDA_BASE&#125;/cuda-11.8/include/cudnn*.h $&#123;CUDA_BASE&#12
 <pre><code class="bash">cat /path/to/your/cuda-11.8/include/cudnn_version.h | grep CUDNN_MAJOR -A 2 
 </code></pre>
 <p>输出结果，可以看到 CUDNN，说明已经成功安装 cudnn。</p>
-<p><img src="/./%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102204532616.png" alt="image-20241102204532616"></p>
+<p><img src="/./%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20241102204532616.png" alt="image-20241102204532616"></p>
 <h2 id="3-配置-git"><a href="#3-配置-git" class="headerlink" title="3. 配置 git"></a>3. 配置 git</h2><p>配置一些基本信息</p>
 <pre><code class="bash">git config --global user.name &lt;your name&gt;
 git config --global user.email &lt;your email&gt;
@@ -308,12 +308,12 @@ git config --list
 <pre><code class="bash"># generate private keys
 ssh-keygen -t rsa
 </code></pre>
-<p><img src="/./%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102213235724.png" alt="image-20241102213235724"></p>
+<p><img src="/./%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20241102213235724.png" alt="image-20241102213235724"></p>
 <p>将 <code>id_rsa.pub</code> 中的内容复制到 <code>github</code> 个人主页（<code>https://github.com/settings/profile</code>）然后在 access 中找到 <em>SSH and GPG keys</em>。</p>
-<img src="./环境配置-assets/image-20241102213324385.png" alt="image-20241102213324385" style="zoom: 67%;" />
+<img src="./大模型环境配置/image-20241102213324385.png" alt="image-20241102213324385" style="zoom: 67%;" />
 
 <p>通过在 SSH keys 中 添加新的 SSH key，将<code>id_rsa.pub</code> 中的内容粘贴进去然后保存即可。</p>
-<p><img src="/./%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102213509837.png" alt="image-20241102213509837"></p>
+<p><img src="/./%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20241102213509837.png" alt="image-20241102213509837"></p>
 <p>以 <code>llava-next</code> 为例，使用 <code>git@</code> 似乎会遇到一点问题。</p>
 <pre><code class="bash">git clone https://github.com/LLaVA-VL/LLaVA-NeXT.git
 </code></pre>
@@ -325,7 +325,7 @@ wget https://github.com/git-lfs/git-lfs/releases/download/v3.5.1/git-lfs-linux-a
 tar -zx git-lfs-linux-amd64-v3.5.1.tar.gz
 </code></pre>
 <p>解压后得到一个对应版本的文件夹，里面有个 <code>install.sh</code>，是将 <code>git-lfs</code> 命令下载到<code>/usr/local</code> 中，在文件中修改 <code>prefix</code> 变量可以修改下载路径，将 <code>git-lfs</code> 下载到指定位置。之前使用 <code>git lfs install</code> 一直找不到命令是因为没有将自定义后的 <code>prefix</code> 这个位置加入环境变量导致系统无法找到，修改 <code>~/.bashrc</code> 可以解决这个问题。</p>
-<p><img src="/./%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102205615456.png" alt="image-20241102205615456"></p>
+<p><img src="/./%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20241102205615456.png" alt="image-20241102205615456"></p>
 <pre><code class="bash"># export PATH
 export PATH=$PATH:/path/to/your/lfs/bin
 # initialize git-lfs
