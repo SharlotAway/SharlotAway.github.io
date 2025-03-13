@@ -175,7 +175,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/Environment/" style="color: #00bcd4">
+                <a href="/tags/Environment/" style="color: #00a596">
                     Environment
                 </a>
             </span>
@@ -187,11 +187,11 @@
     <div class="content" v-pre>
         <h1 id="大模型运行环境配置"><a href="#大模型运行环境配置" class="headerlink" title="大模型运行环境配置"></a>大模型运行环境配置</h1><p>这篇文章介绍在运行大模型之前的配置，包括从 Windows 平台远程连接 Linux 服务器，CUDA 和 cudnn 配置以及 Anaconda 的配置。</p>
 <h2 id="0-VSCode配置远程连接"><a href="#0-VSCode配置远程连接" class="headerlink" title="0. VSCode配置远程连接"></a>0. VSCode配置远程连接</h2><p>安装 <code>VSCode</code> 中的<code>Remote-SSH</code> 扩展，修改<code>ssh</code> 配置文件（可以在 VSCode 中打开新页面，然后 <code>ctrl</code>+<code>shift</code>+<code>p</code> 选择连接到主机）</p>
-<p><img src="/./%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102162325268.png" alt="image-20241102162325268"></p>
+<p><img src="/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102162325268.png" alt="image-20241102162325268"></p>
 <p>选择“连接到主机”，可以看到已经连接过的主机以及添加和配置两个选项。</p>
-<p><img src="/./%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102162357675.png" alt="image-20241102162357675"></p>
+<p><img src="/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102162357675.png" alt="image-20241102162357675"></p>
 <p>可以“+添加新的 SSH 主机“，然后输入 按照提示格式输入<code>ssh &lt;User&gt;@&lt;HostName&gt;:&lt;Port&gt; -&lt;Host&gt;</code> 建立新的连接。</p>
-<p><img src="/./%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102162415763.png" alt="image-20241102162415763"></p>
+<p><img src="/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102162415763.png" alt="image-20241102162415763"></p>
 <p>新建完成后就会在配置文件中出现相应的内容，格式如下。如果要修改连接的名称，修改 <code>&lt;Host&gt;</code> 即可。</p>
 <pre><code class="bash">Host &lt;Host&gt;
   HostName &lt;HostName&gt;
