@@ -3,7 +3,7 @@
 <html lang="Zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>SharlotAway</title>
+    <title>环境配置 | SharlotAway</title>
     <meta name="author" content="Sharlot Away" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -42,7 +42,9 @@
 
 
 
-<script src="/js/lib/home.js"></script>
+
+
+
 
 <link rel="stylesheet" href="/css/main.css" />
 
@@ -152,40 +154,11 @@
 </transition>
 
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-            <div id="home-head">
-    <div
-        id="home-background"
-        ref="homeBackground"
-        data-images="/images/bg_furina.jpg"
-    ></div>
-    <div id="home-info" @click="homeClick">
-        <span class="loop"></span>
-        <span class="loop"></span>
-        <span class="loop"></span>
-        <span class="loop"></span>
-        <span class="info">
-            <div class="wrap">
-                <h1>SharlotAway</h1>
-                <h3></h3>
-                <h5></h5>
-            </div>
-        </span>
+            <div class="article">
+    <div>
+        <h1>环境配置</h1>
     </div>
-</div>
-<div
-    id="home-posts-wrap"
-    ref="homePostsWrap"
-    true
->
-    <div id="home-posts">
-        
-
-<div class="post">
-    <a href="/2025/03/13/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
-        <h2 class="post-title">环境配置</h2>
-    </a>
-    <div class="category-and-date">
-        
+    <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
@@ -194,11 +167,25 @@
         </span>
         
         
-    </div>
-    <div class="description">
-        <div class="content" v-pre>
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
             
-            <h1 id="大模型运行环境配置"><a href="#大模型运行环境配置" class="headerlink" title="大模型运行环境配置"></a>大模型运行环境配置</h1><p>这篇文章介绍在运行大模型之前的配置，包括从 Windows 平台远程连接 Linux 服务器，CUDA 和 cudnn 配置以及 Anaconda 的配置。</p>
+            
+            <span class="tag">
+                
+                <a href="/tags/Environment/" style="color: #00bcd4">
+                    Environment
+                </a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h1 id="大模型运行环境配置"><a href="#大模型运行环境配置" class="headerlink" title="大模型运行环境配置"></a>大模型运行环境配置</h1><p>这篇文章介绍在运行大模型之前的配置，包括从 Windows 平台远程连接 Linux 服务器，CUDA 和 cudnn 配置以及 Anaconda 的配置。</p>
 <h2 id="0-VSCode配置远程连接"><a href="#0-VSCode配置远程连接" class="headerlink" title="0. VSCode配置远程连接"></a>0. VSCode配置远程连接</h2><p>安装 <code>VSCode</code> 中的<code>Remote-SSH</code> 扩展，修改<code>ssh</code> 配置文件（可以在 VSCode 中打开新页面，然后 <code>ctrl</code>+<code>shift</code>+<code>p</code> 选择连接到主机）</p>
 <p><img src="/./%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-assets/image-20241102162325268.png" alt="image-20241102162325268"></p>
 <p>选择“连接到主机”，可以看到已经连接过的主机以及添加和配置两个选项。</p>
@@ -347,183 +334,13 @@ git lfs install
 Git LFS initialized.
 </code></pre>
 
-            
-        </div>
     </div>
-    <div class="post-tags">
-        
-        <span class="icon">
-            <i class="fa-solid fa-tags fa-fw"></i>
-        </span>
-        
-        
-        
-        <span class="tag">
-            
-            <a href="/tags/Environment/" style="color: #ff7d73">Environment</a>
-        </span>
-        
-    </div>
-    <a href="/2025/03/13/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" class="go-post">阅读全文</a>
-</div>
-
-<div class="post">
-    <a href="/2025/03/11/Hexo-%E5%88%9B%E5%BB%BA%E6%96%B0%E5%8D%9A%E6%96%87%E6%8C%87%E5%8D%97/">
-        <h2 class="post-title">Hexo 创建新博文指南</h2>
-    </a>
-    <div class="category-and-date">
-        
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2025/3/11
-        </span>
-        
-        
-    </div>
-    <div class="description">
-        <div class="content" v-pre>
-            
-            <p>如果忘记如何创建新博文了可以看一下。</p>
-
-            
-        </div>
-    </div>
-    <div class="post-tags">
-        
-        <span class="icon">
-            <i class="fa-solid fa-tags fa-fw"></i>
-        </span>
-        
-        
-        
-        <span class="tag">
-            
-            <a href="/tags/Introduction/" style="color: #00bcd4">Introduction</a>
-        </span>
-        
-    </div>
-    <a href="/2025/03/11/Hexo-%E5%88%9B%E5%BB%BA%E6%96%B0%E5%8D%9A%E6%96%87%E6%8C%87%E5%8D%97/" class="go-post">阅读全文</a>
-</div>
-
-<div class="post">
-    <a href="/2025/03/10/training-LLMs/">
-        <h2 class="post-title">HuggingFace 大模型入门</h2>
-    </a>
-    <div class="category-and-date">
-        
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2025/3/10
-        </span>
-        
-        
-    </div>
-    <div class="description">
-        <div class="content" v-pre>
-            
-            <p>了解一下大模型的简单使用方法。</p>
-
-            
-        </div>
-    </div>
-    <div class="post-tags">
-        
-        <span class="icon">
-            <i class="fa-solid fa-tags fa-fw"></i>
-        </span>
-        
-        
-        
-        <span class="tag">
-            
-            <a href="/tags/LLMs/" style="color: #03a9f4">LLMs</a>
-        </span>
-        
-    </div>
-    <a href="/2025/03/10/training-LLMs/" class="go-post">阅读全文</a>
-</div>
-
-<div class="post">
-    <a href="/2025/03/10/Hello-world/">
-        <h2 class="post-title">Hello, world!</h2>
-    </a>
-    <div class="category-and-date">
-        
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2025/3/10
-        </span>
-        
-        
-    </div>
-    <div class="description">
-        <div class="content" v-pre>
-            
-            <p>The first blog, hey hey hey.</p>
-
-            
-        </div>
-    </div>
-    <div class="post-tags">
-        
-        <span class="icon">
-            <i class="fa-solid fa-tags fa-fw"></i>
-        </span>
-        
-        
-        
-        <span class="tag">
-            
-            <a href="/tags/Introduction/" style="color: #03a9f4">Introduction</a>
-        </span>
-        
-    </div>
-    <a href="/2025/03/10/Hello-world/" class="go-post">阅读全文</a>
-</div>
-
-
-        <div class="page-current">
     
-    <span class="current">1</span>
     
     
     
     
-</div>
-
-    </div>
     
-    <div id="home-card">
-        <div id="card-style">
-    <div id="card-div">
-        <div class="avatar">
-            <img src="/images/avatar_f.jpg" alt="avatar" />
-        </div>
-        <div class="name">Sharlot Away</div>
-        <div class="description">
-            <p>中南大学硕士研究生在读<br>work email: <a href="mailto:&#x61;&#119;&#97;&#x79;&#95;&#x7a;&#104;&#x61;&#x6e;&#103;&#50;&#48;&#x30;&#51;&#x40;&#49;&#54;&#x33;&#46;&#99;&#111;&#x6d;">&#x61;&#119;&#97;&#x79;&#95;&#x7a;&#104;&#x61;&#x6e;&#103;&#50;&#48;&#x30;&#51;&#x40;&#49;&#54;&#x33;&#46;&#99;&#111;&#x6d;</a><br>qq: 2402003093</p>
-
-        </div>
-        
-        
-        <div class="friend-links">
-            
-            <div class="friend-link">
-                <a target="_blank" rel="noopener" href="https://argvchs.github.io">Argvchs</a>
-            </div>
-            
-        </div>
-        
-    </div>
-</div>
-
-    </div>
     
 </div>
 
@@ -555,6 +372,12 @@ Git LFS initialized.
         
     </div>
     <script src="/js/main.js"></script>
+    
+    
+
+
+
+
     
 </body>
 </html>
