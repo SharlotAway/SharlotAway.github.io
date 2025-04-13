@@ -175,7 +175,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/Environment/" style="color: #ffa2c4">
+                <a href="/tags/Environment/" style="color: #03a9f4">
                     Environment
                 </a>
             </span>
@@ -285,7 +285,7 @@ def build_vision_tower(vision_tower_cfg, **kwargs):
             model = LlavaQwenForCausalLM.from_pretrained(model_base, low_cpu_mem_usage=True, config=lora_cfg_pretrained, attn_implementation=attn_implementation, **kwargs)
 </code></pre>
 <p>接下来就是修改一下数据格式即可正常加载。</p>
-<p><img src="/2025/04/12/LLaVA-OneVision-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20250407165615030.png" alt="image-20250407165615030"></p>
+<p><img src="/2025/04/12/LLaVA-OneVision-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20250407165615030.png"></p>
 <h3 id="2-2-训练代码调试"><a href="#2-2-训练代码调试" class="headerlink" title="2.2. 训练代码调试"></a>2.2. 训练代码调试</h3><p>调好测试代码之后，尝试运行训练代码。出现的第一个报错是 <code>accelerate</code> 的错误。</p>
 <pre><code class="python">TypeError: Accelerator.__init__() got an unexpected keyword argument &#39;dispatch_batches&#39;
 </code></pre>
