@@ -175,7 +175,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/Environment/" style="color: #03a9f4">
+                <a href="/tags/Environment/" style="color: #00a596">
                     Environment
                 </a>
             </span>
@@ -199,6 +199,9 @@ cd LLaVA-NeXT
 conda activate llava
 pip install --upgrade pip  # Enable PEP 660 support.
 pip install -e &quot;.[train]&quot;
+</code></pre>
+<p>安装 transformers, 可能会遇到 403 错误无法下载，用 http 代替 ssh 下载。</p>
+<pre><code class="bash">pip install transformers@git+ssh://git@github.com/huggingface/transformers.git@1c39974a4c4036fd641bc1191cc32799f85715a4
 </code></pre>
 <p>安装  flash attention，考虑到服务器 cuda 版本为 cu117，因此需要降级。</p>
 <pre><code class="bash">pip install flash_attn==2.7.3 --no-build-isolation
