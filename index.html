@@ -198,262 +198,33 @@
     <div class="description">
         <div class="content" v-pre>
             
-            <h1 id="llava-onevision-处理-pooler-output"><a href="#llava-onevision-处理-pooler-output" class="headerlink" title="llava-onevision 处理 pooler_output"></a>llava-onevision 处理 pooler_output</h1><p>使用 <code>SigLIP</code> 作为 <code>llava-onevision</code> 的视觉塔，由于进行多实例分类的时候会用到较多图像。因此需要 <code>SigLIP</code>视觉编码器的<code>pooler_output</code>是其模型输出中一个关键的特征向量，主要用于下游任务的语义表征。<code>pooler_output</code> 是基于视觉编码器最后一层输出的<code>last_hidden_state</code>（形状为<code>[batch_size, sequence_length, hidden_size]</code>），该状态包含图像分块（如ViT的16×16图像块）的细粒度特征。</p>
-<blockquote>
-<p>  SigLIP 采用一种 Map Head 对未经池化的最后一层隐藏状态（<code>last_hidden_state</code>）进行全局特征聚合，通过自注意机制加权融合所有图像块特征，生成全局语义向量。随后通过线性层和 Tanh 函数激活得到 <code>pooler_output</code>（形状为<code>[batch_size, hidden_size]</code>）。</p>
-</blockquote>
-<p>由于视觉塔的参数是冻结的，用 <code>pooler_output</code> 进行训练和推理，可以减少视觉塔前向传播的次数，加快程序运行。为了实现这一过程，主要分为几个部分：</p>
-<ol>
-<li>使用视觉编码器提取 SigLip 图像特征（包括 <code>pooler_output</code>）</li>
-<li>按照原来的结构（图像）保存图像特征（<code>.pt</code>）文件</li>
-<li>修改 <code>llava_arch</code>（或其他代码，确保能正确加载特征向量）</li>
-<li>运行 <code>model_vqa</code></li>
-<li>运行训练程序</li>
-</ol>
-<h2 id="1-提取-SigLIP-特征（pooler-output）"><a href="#1-提取-SigLIP-特征（pooler-output）" class="headerlink" title="1 提取 SigLIP 特征（pooler_output）"></a>1 提取 SigLIP 特征（<code>pooler_output</code>）</h2><p><img src="/2025/04/17/llava-pooled-feature/image-20250414155018518.png"></p>
-<p>LLaVA-OneVision 网络结构如上图所示，遵循 LLaVA 的网络结构和数据处理方式，模型首先将 SigLIP 的视觉特征逐个通过 MLP 投影到 LLM 的特征空间。对于多图像的任务，每个图像都需要 729 个 token，如下图所示。如果可以成功用 <code>pooler_output</code> 进行表示，就可以把图像序列所需的 token 减少到 <em>N</em>，以适配简单的任务（例如分类）。</p>
-<p><img src="/2025/04/17/llava-pooled-feature/image-20250414155300790.png"></p>
-<p>由于投影层是逐个 token 进行映射，因此只需要控制视觉塔的输出为 <code>pooler_output</code> 即可。</p>
-<pre><code class="python">from llava.model.multimodal_encoder.siglip_encoder import *
-</code></pre>
-<h3 id="1-1-LLaVAMetaForCausalLM"><a href="#1-1-LLaVAMetaForCausalLM" class="headerlink" title="1.1 LLaVAMetaForCausalLM"></a>1.1 LLaVAMetaForCausalLM</h3><p>先不考虑 anyres 的提取方法，从多张图像说起（实际上 anyres 就是把图像切开作为多张图像传入的）。首先要保证是图像是以张量列表的形式输入模型的，并且是一个四维张量，张量的各个维度分别是<code>[batch_size, channel_num, width, height]</code>，例如 <code>siglip</code> 为 <code>[1,3,384,384]</code>。</p>
-<pre><code class="python">if type(images) is list or images.ndim == 5:
-    if type(images) is list:
-        images = [x.unsqueeze(0) if x.ndim == 3 else x for x in images]
-</code></pre>
-<p>获得图像特征的步骤：</p>
-<ol>
-<li>将所有图像张量按照 dim&#x3D;0 得到一个 <code>[num_img, num_channel, width, height]</code> 的矩阵；</li>
-<li>获得每个图像序列的序列长度（例如两个拼在一起、或者单独一个）；</li>
-<li>调用视觉塔进行编码，原文是 <code>self.encode_images()</code>，不过这里只写到 vision_tower 的输出这里；</li>
-</ol>
-<pre><code class="python">concat_images = torch.cat([image for image in images_list], dim=0)
-split_sizes = [image.shape[0] for image in images_list]
-encoded_image_features = model.get_model().get_vision_tower()(concat_images)
-encoded_image_features.shape
-</code></pre>
-<p><code>mm_projector</code> 的作用仅仅是改变一下隐藏维度。</p>
-<p><img src="/2025/04/17/llava-pooled-feature/image-20250414213916644.png"></p>
-<p>随后使用<code>torch.split</code> 将编码图像特征分割成列表，所以要想接入用<code>pooler_output</code> 代表的图像特征，需要在<code>encode_image()</code> 方法中经过投影层之前插入一个 <code>[num_img, 1, hidden_size]</code> 的矩阵。</p>
-<h3 id="1-2-SigLipVisionTower"><a href="#1-2-SigLipVisionTower" class="headerlink" title="1.2 SigLipVisionTower"></a>1.2 SigLipVisionTower</h3><p><code>SigLipVisionTower</code> 的原始代码如下，直接通过 <code>self.vision_tower</code> 输出一个图像特征。</p>
-<pre><code class="python">class SigLipVisionTower(nn.Module):
-    def __init__(self, vision_tower, vision_tower_cfg, delay_load=False):
-        
-    def forward(self, images):
-        if type(images) is list:
-            image_features = []
-            for image in images:
-                image_forward_out = self.vision_tower(image.to(device=self.device, dtype=self.dtype).unsqueeze(0), output_hidden_states=True)
-                image_feature = image_forward_out.hidden_states[-1].to(image.dtype)
-                assert image_features.shape[-2] == 729
-                image_features.append(image_feature)
-        else:
-            image_forward_outs = self.vision_tower(images.to(device=self.device, dtype=self.dtype), output_hidden_states=True)
-            image_features = image_forward_outs.hidden_states[-1].to(images.dtype)
-            assert image_features.shape[-2] == 729
-
-        return image_features
-</code></pre>
-<p>在初始化模型的时候，是先加载了一个 <code>SigLipVisionModel</code>，然后删除编码器（<code>SigLipVisionEncoder</code>）的最后一层。模型定义在 <code>SigLipVisionTransformer</code>，模型的结构为</p>
-<p><code>embedding, encoder, post_layernorm，MAPHead</code>。发现<code>pooler_output</code> 仅对编码器最后一层的隐藏状态进行聚合，<code>last_hidden_state</code> 经过 <code>post_layernorm</code> 作为<code>ViT</code> 的<code>last_hidden_state</code>，经过 <code>MAPHead</code> 之后得到 <code>pooler_output</code>。</p>
-<pre><code class="python">class SigLipVisionTransformer(nn.Module):
-    def forward(
-        self,
-        pixel_values,
-        output_attentions: Optional[bool] = None,
-        output_hidden_states: Optional[bool] = None,
-        return_dict: Optional[bool] = None,
-    ) -&gt; Union[Tuple, BaseModelOutputWithPooling]:
-        r&quot;&quot;&quot;
-        Returns:
-
-        &quot;&quot;&quot;
-        output_attentions = output_attentions if output_attentions is not None else self.config.output_attentions
-        output_hidden_states = output_hidden_states if output_hidden_states is not None else self.config.output_hidden_states
-        return_dict = return_dict if return_dict is not None else self.config.use_return_dict
-
-        hidden_states = self.embeddings(pixel_values)
-
-        encoder_outputs = self.encoder(
-            inputs_embeds=hidden_states,
-            output_attentions=output_attentions,
-            output_hidden_states=output_hidden_states,
-            return_dict=return_dict,
-        )
-
-        last_hidden_state = encoder_outputs[0]
-        last_hidden_state = self.post_layernorm(last_hidden_state)
-
-        pooled_output = self.head(last_hidden_state)
-
-        if not return_dict:
-            return (last_hidden_state, pooled_output) + encoder_outputs[1:]
-
-        return BaseModelOutputWithPooling(
-            last_hidden_state=last_hidden_state,
-            pooler_output=pooled_output,
-            hidden_states=encoder_outputs.hidden_states,
-            attentions=encoder_outputs.attentions,
-        )
-</code></pre>
-<p>而在 <code>SigLipVisionTower</code> 加载模型的时候删除了最后一层 <code>encoder</code> 并将输出头改为 <code>Identity</code>。如果需要 <code>pooler_output</code>，考虑复制预训练的 <code>MAPHead</code> 。 选择直接加在 <code>VisionTower</code> 中作为另外的一个头。修改后检查输出维度。</p>
-<p><img src="/2025/04/17/llava-pooled-feature/image-20250415110157024.png"></p>
-<h2 id="2-LLaVA-训练代码修改"><a href="#2-LLaVA-训练代码修改" class="headerlink" title="2 LLaVA 训练代码修改"></a>2 LLaVA 训练代码修改</h2><p>为了成功将保存为 <code>pt</code> 的张量加载到 <code>input_ids</code> 中，</p>
-<h3 id="2-1-加载监督数据集"><a href="#2-1-加载监督数据集" class="headerlink" title="2.1 加载监督数据集"></a>2.1 加载监督数据集</h3><p><code>LazySupervisedDataset</code> 是从 <code>json</code> 或者 <code>yaml</code> 文件中加载 <code>llava</code> 模型的训练数据。</p>
-<pre><code class="python">class LazySupervisedDataset(Dataset):
-    def __init__(self, data_path: str, tokenizer: transformers.PreTrainedTokenizer, data_args: DataArguments):
-        super(LazySupervisedDataset, self).__init__()
-        self.tokenizer = tokenizer
-        self.list_data_dict = []
-        # 此处省略了 yaml 格式和拼接的 json，只加载简单的 json 文件
-        data_args.dataset_paths = [data_path]
-        rank0_print(f&quot;Loading &#123;data_path&#125;&quot;)
-        with open(data_path, &quot;r&quot;) as file:
-            cur_data_dict = json.load(file)
-            rank0_print(f&quot;Loaded &#123;len(cur_data_dict)&#125; samples from &#123;data_path&#125;&quot;)
-            self.list_data_dict.extend(cur_data_dict)
-        self.tokenizer = tokenizer
-        self.data_args = data_args
-</code></pre>
-<p>使用如下代码补充完整数据参数。</p>
-<pre><code class="python">data_args = DataArguments(
-    data_path=&quot;/path/to/train_data.json&quot;,
-    lazy_preprocess=True,
-    is_multimodal=True,
-    image_folder=&quot;/path/to/image/folder&quot;,
-    image_aspect_ratio=&quot;anyres&quot;,
-    image_grid_pinpoints=&quot;(1x1),...,(2x2)&quot;
-)
-data_args.image_processor = model.get_vision_tower().image_processor
-data_args.mm_use_im_start_end = False
-data_args.mm_use_im_patch_token = False
-</code></pre>
-<p>加载数据集。</p>
-<pre><code class="python">train_dataset = LazySupervisedDataset(
-    tokenizer=tokenizer,
-    data_path=data_args.data_path,
-    data_args = data_args
-)
-</code></pre>
-<p>使用<code>train_dataset[0]</code>检查可调用的数据样本，每个样本包含<code>[&#39;input_ids&#39;, &#39;labels&#39;, &#39;image&#39;, &#39;id&#39;]</code> 四个字段。其中 <code>image</code> 是图像的列表，其中的每个元素都是一个列表，由一个 <code>[3,384,384]</code>的张量（全是 -0.039），一个<code>image_size</code> 和一个表示模态的 <code>“image”</code>组成。为了直接传入 <code>feature</code>，直接用 <code>feature</code> 张量替换图像张量（<code>[3,384,384]</code>）。这里直接选择了替代的方案，感觉略显暴力。</p>
-<pre><code class="python">if &#39;feature&#39; in sources[0]:
-    print(&quot;Replace image with feature tensor&quot;)
-    feature_file = self.list_data_dict[i][&#39;feature&#39;]
-    if type(feature_file) is str:
-        feature_file = [feature_file]
-    assert len(feature_file) == len(image)
-    feature = [torch.load(os.path.join(self.data_args.image_folder, f)) for f in feature_file]
-    for idx, f in enumerate(feature):
-        image[idx][0] = f
-        image[idx][-1] = &quot;feature&quot;
-</code></pre>
-<p>以上就完成了加载 <code>LazySupervisedDataset</code> 的过程。</p>
-<h3 id="2-2-Data-Collator"><a href="#2-2-Data-Collator" class="headerlink" title="2.2 Data Collator"></a>2.2 Data Collator</h3><p>在训练代码中涉及了一个 data collator，Data Collator的主要功能是将多个数据样本批量处理成模型的输入，相当于是一个 batch 级别的 Tokenizer，主要有以下几个核心功能。</p>
-<ol>
-<li><p><strong>动态填充与截断</strong><br> • <strong>智能填充</strong>：根据批次内最长样本动态补充 <code>&lt;pad&gt;</code> 标记，支持左&#x2F;右填充策略（如 LLaMA 系列需左填充）<br> • <strong>长度控制</strong>：通过 <code>model_max_length</code> 参数截断超长序列，防止显存溢出</p>
-</li>
-<li><p><strong>损失遮蔽机制</strong><br> • 对标签序列中的填充位置自动标记为 <code>IGNORE_INDEX</code>（通常为-100），使损失函数忽略无效位置计算<br> • 示例：在问答任务中遮蔽问题部分的损失，仅计算答案部分的预测误差</p>
-</li>
-<li><p><strong>注意力掩码生成</strong><br> 自动创建 <code>attention_mask</code> 标识有效数据区域，排除填充位置对注意力计算的影响</p>
-</li>
-</ol>
-<pre><code class="python">def make_supervised_data_module(tokenizer: transformers.PreTrainedTokenizer, data_args) -&gt; Dict:
-    &quot;&quot;&quot;Make dataset and collator for supervised fine-tuning.&quot;&quot;&quot;
-    train_dataset = LazySupervisedDataset(tokenizer=tokenizer, data_path=data_args.data_path, data_args=data_args)
-    data_collator = DataCollatorForSupervisedDataset(tokenizer=tokenizer)
-    return dict(train_dataset=train_dataset, eval_dataset=None, data_collator=data_collator)
-</code></pre>
-<h3 id="2-3-LLaVATrainer"><a href="#2-3-LLaVATrainer" class="headerlink" title="2.3 LLaVATrainer"></a>2.3 LLaVATrainer</h3><p> <code>train_dataset</code> 和 <code>data_collator</code> 被作为参数传入 <code>LLaVATrainer</code> 中。在<code>Trainer</code> 中可以通过 <code>trainer.train_dataset</code> 查看数据集的加载情况。如果要查看每个批次的输入，可用如下代码通过 <code>data_loader</code>查看。</p>
-<pre><code class="python">data_loader = trainer.get_train_dataloader()
-batch = next(iter(data_loader))
-</code></pre>
-<p>该输出包括</p>
-<pre><code class="python">[&#39;input_ids&#39;, &#39;labels&#39;, &#39;attention_mask&#39;, &#39;image_sizes&#39;, &#39;modalities&#39;, &#39;images&#39;]
-</code></pre>
-<ul>
-<li><code>input_ids</code> 是输入序列在 tokenizer 中的序号，模型需要预测的输出用 <code>&lt;|endoftext|&gt;</code> 代替；</li>
-<li><code>labels</code> 是表示需要预测序列在 tokenizer 中的序号，输入部分用 <code>IGNORE_INDEX</code> 表示</li>
-<li><code>attention_mask</code> 是注意力掩码，是 bool 矩阵；</li>
-<li><code>image_sizes</code>, <code>modalities</code> 分别表示每个图像的大小和模态（这里已经改成 <code>feature</code>）；</li>
-<li><code>images</code> 是图像的掩码，&#x3D;&#x3D;初始加载的是 $3\times 384 \times 384$ 的全 0 矩阵&#x3D;&#x3D;，现在改为了每个图像的 <code>pooler_output</code></li>
-</ul>
-<p>之后要把这部分传下去，就是在 <code>trainer.train()</code> 里面进行调用</p>
-<h2 id="3-使用-pt-文件作为图像进行前向传播"><a href="#3-使用-pt-文件作为图像进行前向传播" class="headerlink" title="3 使用 pt 文件作为图像进行前向传播"></a>3 使用 pt 文件作为图像进行前向传播</h2><p>在上面成功加载到了 <code>Trainer</code> 的数据集中，但是还是只是加载了一个列表的形式，列举了会用到的元素，具体涉及如何将 <code>images</code> 直接插入到模型的前向传播中，并且不影响模型的其他功能，需要修改模型的前向传播的逻辑。</p>
-<h3 id="3-1-VQA-图像处理"><a href="#3-1-VQA-图像处理" class="headerlink" title="3.1 VQA 图像处理"></a>3.1 VQA 图像处理</h3><p>在 &sect; 1.1 中已经介绍了在 <code>llava_arch</code> 中将图像处理为 <code>encoded_image_features</code> 的过程。接下来需要梳理从读取数据开始到处理为多个图像特征的流程，介绍从 <code>model()</code> 方法开始。</p>
-<pre><code class="python">image_tensors = []
-image_sizes = []
-for image_file in image_files:
-    image = Image.open(os.path.join(args.image_folder, image_file))
-    image_sizes.append(image.size)
-    image_tensor = image_processor.preprocess(image, return_tensors=&#39;pt&#39;)[&#39;pixel_values&#39;]
-    image_tensors.append(image_tensor.half().cuda())
-</code></pre>
-<p>这里的 <code>image_tensors</code> 是处理后得到的 <code>[3,384,384]</code> 的张量，和 Trainer 处理的结果是一致的。因此，首先读取 <code>features</code> 作为 <code>image_tensors</code> 传入。因为在 <code>dataset</code> 里面设计的传入列表，这里也以列表形式传入。</p>
-<pre><code class="python">def eval_model(args):
-    # ... 这里为一个说明
-    for sample in dataset:
-        # ...
-        image_tensors = []
-        modalities = []
-        if &quot;feature&quot; in line:
-            # print(&quot;Loading pooler outputs instead of image pixels&quot;)
-            image_sizes = []
-            for feature_file in feature_files:
-                image_tensor = torch.load(os.path.join(args.image_folder, feature_file))
-                image_sizes.append((1600,1200))
-                modalities.append(&quot;feature&quot;)
-                image_tensors.append(image_tensor.half().cuda())
-        else:
-            image_sizes = []
-            for image_file in image_files:
-                image = Image.open(os.path.join(args.image_folder, image_file))
-                image_sizes.append(image.size)
-                modalities.append(&quot;image&quot;)
-                image_tensor = image_processor.preprocess(image, return_tensors=&#39;pt&#39;)[&#39;pixel_values&#39;]
-                image_tensors.append(image_tensor.half().cuda())
-            image_tensors = torch.cat(image_tensors, dim=0)
-</code></pre>
-<h3 id="3-2-LLaVAMetaModel"><a href="#3-2-LLaVAMetaModel" class="headerlink" title="3.2 LLaVAMetaModel"></a>3.2 LLaVAMetaModel</h3><p>先加载一个 <code>feature_list</code></p>
-<pre><code class="python"># 插入 modalities 是 image 的
-images_list = []
-feature_list = []
-for idx, image in enumerate(images):
-    # 如果模态是特征就直接加到 feature_list 中
-    if modalities[idx] == &quot;feature&quot;:
-        feature_list.append(image)
-        continue
-    if image.ndim == 4:
-        images_list.append(image)
-    else:
-        images_list.append(image.unsqueeze(0))
-</code></pre>
-<p>对特征列表的特征进行投影。</p>
-<pre><code class="python"># 加载的完整图像
-if images_list != []:
-    concat_images = torch.cat([image for image in images_list], dim=0)
-    split_sizes = [image.shape[0] for image in images_list]
-    encoded_image_features = self.encode_images(concat_images)
-    encoded_image_features = torch.split(encoded_image_features, split_sizes)
-else:
-    encoded_image_features = []
-# 加载的特征
-if feature_list != []:
-    concat_features = torch.cat([feature for feature in feature_list], dim=0)
-    feature_split_sizes = [feature.shape[0] for feature in feature_list]
-    projected_features = self.project_images(concat_features)
-    # 将 feature 列表加到 encoded_image_features 后面
-    encoded_image_features.extend(projected_features)
-</code></pre>
-<p>但是速度并未明显改善，考虑是经过多次 <code>MLP</code> 的缘故。</p>
-<h3 id="3-3-未解决问题"><a href="#3-3-未解决问题" class="headerlink" title="3.3 未解决问题"></a>3.3 未解决问题</h3><p>还存在一些无法加载的数据</p>
-<p><img src="/2025/04/17/llava-pooled-feature/image-20250417112134682.png"></p>
+            <p>用 siglip 编码器的全局特征替代图像特征输入大模型</p>
 
             
         </div>
     </div>
     <div class="post-tags">
         
+        <span class="icon">
+            <i class="fa-solid fa-tags fa-fw"></i>
+        </span>
         
+        
+        
+        <span class="tag">
+            
+            <a href="/tags/LLaVA/" style="color: #ffa2c4">LLaVA</a>
+        </span>
+        
+        <span class="tag">
+            
+            <a href="/tags/SigLip/" style="color: #00bcd4">SigLip</a>
+        </span>
+        
+        <span class="tag">
+            
+            <a href="/tags/LLM/" style="color: #ffa2c4">LLM</a>
+        </span>
         
     </div>
     <a href="/2025/04/17/llava-pooled-feature/" class="go-post">阅读全文</a>
@@ -492,7 +263,7 @@ if feature_list != []:
         
         <span class="tag">
             
-            <a href="/tags/Environment/" style="color: #ff7d73">Environment</a>
+            <a href="/tags/Environment/" style="color: #03a9f4">Environment</a>
         </span>
         
     </div>
@@ -532,12 +303,12 @@ if feature_list != []:
         
         <span class="tag">
             
-            <a href="/tags/Visualization/" style="color: #00a596">Visualization</a>
+            <a href="/tags/Visualization/" style="color: #ff7d73">Visualization</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/Qwen2/" style="color: #00bcd4">Qwen2</a>
+            <a href="/tags/Qwen2/" style="color: #00a596">Qwen2</a>
         </span>
         
     </div>
@@ -577,7 +348,7 @@ if feature_list != []:
         
         <span class="tag">
             
-            <a href="/tags/Environment/" style="color: #00a596">Environment</a>
+            <a href="/tags/Environment/" style="color: #ff7d73">Environment</a>
         </span>
         
     </div>
@@ -617,7 +388,7 @@ if feature_list != []:
         
         <span class="tag">
             
-            <a href="/tags/Introduction/" style="color: #03a9f4">Introduction</a>
+            <a href="/tags/Introduction/" style="color: #00a596">Introduction</a>
         </span>
         
     </div>
@@ -657,7 +428,7 @@ if feature_list != []:
         
         <span class="tag">
             
-            <a href="/tags/LLMs/" style="color: #ff7d73">LLMs</a>
+            <a href="/tags/LLMs/" style="color: #00bcd4">LLMs</a>
         </span>
         
     </div>
@@ -684,7 +455,7 @@ if feature_list != []:
         </div>
         <div class="name">Sharlot Away</div>
         <div class="description">
-            <p>中南大学硕士研究生在读<br>work email: <a href="mailto:&#97;&#119;&#97;&#121;&#95;&#x7a;&#x68;&#x61;&#110;&#103;&#50;&#48;&#x30;&#51;&#x40;&#49;&#54;&#x33;&#46;&#99;&#111;&#x6d;">&#97;&#119;&#97;&#121;&#95;&#x7a;&#x68;&#x61;&#110;&#103;&#50;&#48;&#x30;&#51;&#x40;&#49;&#54;&#x33;&#46;&#99;&#111;&#x6d;</a><br>qq: 2402003093</p>
+            <p>中南大学硕士研究生在读<br>work email: <a href="mailto:&#x61;&#119;&#97;&#x79;&#x5f;&#122;&#x68;&#x61;&#110;&#x67;&#50;&#x30;&#48;&#51;&#64;&#49;&#x36;&#x33;&#x2e;&#99;&#111;&#x6d;">&#x61;&#119;&#97;&#x79;&#x5f;&#122;&#x68;&#x61;&#110;&#x67;&#50;&#x30;&#48;&#51;&#64;&#49;&#x36;&#x33;&#x2e;&#99;&#111;&#x6d;</a><br>qq: 2402003093</p>
 
         </div>
         

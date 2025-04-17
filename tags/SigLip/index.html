@@ -3,7 +3,7 @@
 <html lang="Zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>Hexo 创建新博文指南 | SharlotAway</title>
+    <title>Tags: SigLip | SharlotAway</title>
     <meta name="author" content="Sharlot Away" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -37,10 +37,6 @@
 
 
 <script src="/js/lib/preview.js"></script>
-
-
-
-
 
 
 
@@ -154,92 +150,145 @@
 </transition>
 
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-            <div class="article">
-    <div>
-        <h1>Hexo 创建新博文指南</h1>
-    </div>
-    <div class="info">
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2025/3/11
+            <div id="archives">
+    
+    <div class="categories-tags">
+        
+        
+        
+        <span>
+            <a href="/tags/Introduction/" style="background: #00a596">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                Introduction
+            </a>
         </span>
         
         
-        <span class="tags">
-            <span class="icon">
-                <i class="fa-solid fa-tags fa-fw"></i>
-            </span>
-            
-            
-            <span class="tag">
+        
+        <span>
+            <a href="/tags/Environment/" style="background: #ffa2c4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                Environment
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/LLaVA/" style="background: #ff7d73">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                LLaVA
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/SigLip/" style="background: linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                SigLip
+            </a>
+        </span>
+        
+        
+        
+        
+        
+        <span>
+            <a href="/tags/LLM/" style="background: #00bcd4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                LLM
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/LLMs/" style="background: #ff7d73">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                LLMs
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/Visualization/" style="background: #03a9f4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                Visualization
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/Qwen2/" style="background: #ffa2c4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                Qwen2
+            </a>
+        </span>
+        
+        
+    </div>
+    
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time">2025/4/17</div>
+            <a href="/2025/04/17/llava-pooled-feature/">
+                <h3>llava-pooled-feature</h3>
+            </a>
+            <div class="info">
                 
-                <a href="/tags/Introduction/" style="color: #ffa2c4">
-                    Introduction
-                </a>
-            </span>
-            
-        </span>
-        
+                
+                <span class="tags">
+                    <span class="icon">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </span>
+                    
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/LLaVA/" style="color: #ffa2c4">
+                            LLaVA
+                        </a>
+                    </span>
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/SigLip/" style="color: #00bcd4">
+                            SigLip
+                        </a>
+                    </span>
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/LLM/" style="color: #03a9f4">
+                            LLM
+                        </a>
+                    </span>
+                    
+                </span>
+                
+            </div>
+        </div>
     </div>
-    
-    <div class="content" v-pre>
-        <h2 id="使用命令行新建文章"><a href="#使用命令行新建文章" class="headerlink" title="使用命令行新建文章"></a>使用命令行新建文章</h2><p>进入命令行（<code>Win</code> + <code>R</code>，输入 cmd，点击回车），找到 <code>Blog</code> 所在的目录，使用如下命令新建博文。</p>
-<pre><code class="bash">hexo new &quot;新建文章&quot;
-</code></pre>
-<p>就会创建一个名为<code>新建文章.md</code>的文件，命令行提示。</p>
-<pre><code class="bash">INFO  Validating config
-INFO  Created: \Path\to\your\Blog\source\_posts\新建文章.md
-</code></pre>
-<p>此时可以看到在<code>source/_posts</code> 文件夹下多出一个<code>新建文章.md</code>，打开就可以使用标准 <code>markdown</code>进行编辑了。</p>
-<h2 id="调试和查看"><a href="#调试和查看" class="headerlink" title="调试和查看"></a>调试和查看</h2><p>在编辑好之后，使用<code>hexo</code>查看刚刚编辑好的博文。</p>
-<pre><code class="bash">hexo clean # 清理旧的文件
-hexo server # 允许你在本地查看生成的网站，进行调试
-</code></pre>
-<p>如果调试成功，就使用<code>hexo</code>推送博文。在部署之前需要配置好根目录和主题目录下的 <code>_config.yaml</code>文件以确保可以正常生成网页。</p>
-<pre><code class="bash">hexo clean
-hexo generate # 生成静态网站文件，将 Markdown 文件和其他资源转换为 HTML 文件。
-hexo deploy # 将生成的静态文件部署到指定的远程服务器或托管平台（如 GitHub Pages）。
-</code></pre>
-<h2 id="一些小问题"><a href="#一些小问题" class="headerlink" title="一些小问题"></a>一些小问题</h2><h3 id="代码高亮"><a href="#代码高亮" class="headerlink" title="代码高亮"></a>代码高亮</h3><p>在 particlex 主题下，代码高亮和 <code>hexo</code> 的默认配置冲突，在根目录下的 <code>_config.yaml</code> 做出如下修改。</p>
-<pre><code class="yaml"># 旧版本
-highlight:
-    enable: false
-prismjs:
-    enable: false
-# 如果是 7.0.0+，去掉 highlight 和 prismjs
-syntax_highlighter:
-</code></pre>
-<p>在主题目录的配置文件<code>_config.yaml</code>中使用进行代码高亮的配置。</p>
-<pre><code class="yaml"># Highlight.js
-# https://highlightjs.org
-highlight:
-    enable: true
-    style: github
-</code></pre>
-<h3 id="博文中插入图像"><a href="#博文中插入图像" class="headerlink" title="博文中插入图像"></a>博文中插入图像</h3><p>需要在站点目录下的 <code>_config.yaml</code> 加上一个 </p>
-<pre><code class="yaml">post_asset_folder: true
-marked:
-  prependRoot: true
-  postAsset: true
-</code></pre>
-<p>然后再安装一个插件</p>
-<pre><code class="bash">npm install https://github.com/CodeFalling/hexo-asset-image -- save
-</code></pre>
-<p>这样在 <code>hexo new</code> 的时候就会创建一个和博文同名的文件夹，用于存放图像。在 markdown 文件里用标准的插入图像命令 <code>![]()</code>即可。</p>
-<pre><code class="markdown">![](&lt;文章名&gt;/&lt;图像名&gt;)
-</code></pre>
-<p>切记，<code>[]</code>中是空的，不然会出错。</p>
-<h3 id="博文置顶"><a href="#博文置顶" class="headerlink" title="博文置顶"></a>博文置顶</h3><p>暂未解决。</p>
-
-    </div>
-    
-    
-    
-    
-    
-    
     
 </div>
 
@@ -271,12 +320,6 @@ marked:
         
     </div>
     <script src="/js/main.js"></script>
-    
-    
-
-
-
-
     
 </body>
 </html>
