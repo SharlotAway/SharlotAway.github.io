@@ -199,7 +199,7 @@
     </div>
     
     <div class="content" v-pre>
-        <p>使用 <code>SigLIP</code> 作为 <code>llava-onevision</code> 的视觉塔，由于进行多实例分类的时候会用到较多图像。因此需要 <code>SigLIP</code>视觉编码器的<code>pooler_output</code>是其模型输出中一个关键的特征向量，主要用于下游任务的语义表征。<code>pooler_output</code> 是基于视觉编码器最后一层输出的<code>last_hidden_state</code>（形状为<code>[batch_size, sequence_length, hidden_size]</code>），该状态包含图像分块（如ViT的16×16图像块）的细粒度特征。</p>
+        <h1 id="最后的输出是乱码，看来不进行足够的预训练还是难以进行训练"><a href="#最后的输出是乱码，看来不进行足够的预训练还是难以进行训练" class="headerlink" title="最后的输出是乱码，看来不进行足够的预训练还是难以进行训练"></a>最后的输出是乱码，看来不进行足够的预训练还是难以进行训练</h1><p>使用 <code>SigLIP</code> 作为 <code>llava-onevision</code> 的视觉塔，由于进行多实例分类的时候会用到较多图像。因此需要 <code>SigLIP</code>视觉编码器的<code>pooler_output</code>是其模型输出中一个关键的特征向量，主要用于下游任务的语义表征。<code>pooler_output</code> 是基于视觉编码器最后一层输出的<code>last_hidden_state</code>（形状为<code>[batch_size, sequence_length, hidden_size]</code>），该状态包含图像分块（如ViT的16×16图像块）的细粒度特征。</p>
 <blockquote>
 <p>  SigLIP 采用一种 Map Head 对未经池化的最后一层隐藏状态（<code>last_hidden_state</code>）进行全局特征聚合，通过自注意机制加权融合所有图像块特征，生成全局语义向量。随后通过线性层和 Tanh 函数激活得到 <code>pooler_output</code>（形状为<code>[batch_size, hidden_size]</code>）。</p>
 </blockquote>
