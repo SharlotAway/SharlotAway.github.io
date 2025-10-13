@@ -3,7 +3,7 @@
 <html lang="Zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>Hexo 创建新博文指南 | SharlotAway</title>
+    <title>注意力可视化 | SharlotAway</title>
     <meta name="author" content="Sharlot Away" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -156,14 +156,14 @@
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
             <div class="article">
     <div>
-        <h1>Hexo 创建新博文指南</h1>
+        <h1>注意力可视化</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2025/3/11
+            2025/3/13
         </span>
         
         
@@ -175,8 +175,15 @@
             
             <span class="tag">
                 
-                <a href="/tags/Introduction/" style="color: #ffa2c4">
-                    Introduction
+                <a href="/tags/Visualization/" style="color: #ff7d73">
+                    Visualization
+                </a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/Qwen2/" style="color: #00bcd4">
+                    Qwen2
                 </a>
             </span>
             
@@ -185,53 +192,120 @@
     </div>
     
     <div class="content" v-pre>
-        <h2 id="使用命令行新建文章"><a href="#使用命令行新建文章" class="headerlink" title="使用命令行新建文章"></a>使用命令行新建文章</h2><p>进入命令行（<code>Win</code> + <code>R</code>，输入 cmd，点击回车），找到 <code>Blog</code> 所在的目录，使用如下命令新建博文。</p>
-<pre><code class="bash">hexo new &quot;新建文章&quot;
+        <p>这篇文章的主要目的是从语言模型开始逐步理解注意力的可视化并最终应用到 <code>llava-onevision-qwen2-0.5b-ov</code> 上以实现从文本到图像的关注。由于使用一些现成的 VLM 可视化工具得到的结果比较惨不忍睹，决定自己从头实现。</p>
+<h1 id="1-Qwen2-入门"><a href="#1-Qwen2-入门" class="headerlink" title="1. Qwen2 入门"></a>1. Qwen2 入门</h1><p>以下代码是使用 transformers 加载 Qwen2 模型的代码，为了和 LLaVA 保持一致，选择用 <code>Qwen2ForCasualLM</code> 来代替<code>AutoModelForCausalLM</code>。无法连接到 Huggingface 的话就从<code>hf-mirror</code>把模型下载到本地，然后将 <code>model_name</code> 换成本地的模型权重路径。</p>
+<pre><code class="python"># 引入依赖
+import torch
+from transformers import Qwen2Config, Qwen2Model, Qwen2ForCausalLM, Qwen2Tokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+# 加载模型和分词器
+model_name = &quot;/path/to/your/Qwen2-0.5B-Instruct&quot;  
+model = Qwen2ForCausalLM.from_pretrained(
+    model_name,
+    torch_dtype=torch.bfloat16,
+    device_map=&quot;auto&quot;
+)
+tokenizer = AutoTokenizer.from_pretrained(model_name)
 </code></pre>
-<p>就会创建一个名为<code>新建文章.md</code>的文件，命令行提示。</p>
-<pre><code class="bash">INFO  Validating config
-INFO  Created: \Path\to\your\Blog\source\_posts\新建文章.md
+<p>接下来是定制 <code>prompt</code> 和对话模板进行输出，例如我们提问模型“中国的首都是哪里？”</p>
+<pre><code class="python">prompt = &quot;What is the capital of China ?&quot;
+messages = [&#123;&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: prompt&#125;]
+text = tokenizer.apply_chat_template(
+    messages,
+    tokenize=False,
+    add_generation_prompt=True
+)
+# 使用分词器转换为词语的序号
+model_inputs = tokenizer([text], return_tensors=&quot;pt&quot;).to(model.device)
+# 生成响应的序号
+generated_ids = model.generate(
+    **model_inputs,
+    max_new_tokens=128
+)
+generated_ids = [
+    output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+]
+# 解码，由于是 batch，所以返回的是数组
+response = tokenizer.batch_decode(generated_ids, skip_special_tokens=False)[0]
 </code></pre>
-<p>此时可以看到在<code>source/_posts</code> 文件夹下多出一个<code>新建文章.md</code>，打开就可以使用标准 <code>markdown</code>进行编辑了。</p>
-<h2 id="调试和查看"><a href="#调试和查看" class="headerlink" title="调试和查看"></a>调试和查看</h2><p>在编辑好之后，使用<code>hexo</code>查看刚刚编辑好的博文。</p>
-<pre><code class="bash">hexo clean # 清理旧的文件
-hexo server # 允许你在本地查看生成的网站，进行调试
+<h2 id="1-1-注意力输出"><a href="#1-1-注意力输出" class="headerlink" title="1.1. 注意力输出"></a>1.1. 注意力输出</h2><p>上述代码使用到了对话模板和解码器生成序列，这是用于文本交互的输入输出方式。为了输出注意力的可视化，需要直接使用前向传播，返回模型的输出，注意力等内容。同样的问题，代码如下：</p>
+<pre><code class="python"># 输入文本
+text = prompt
+inputs = tokenizer(text, return_tensors=&quot;pt&quot;).to(&quot;cuda&quot;)
+# 前向传播，并获取注意力权重
+with torch.no_grad():
+    outputs = model(**inputs, output_attentions=True)  # 关键参数 output_attentions=True
+# outputs = model(**input)
+
+# `attentions` 是一个元组，包含每一层的注意力权重
+# shape: (num_layers, batch_size, num_heads, seq_len, seq_len)
+attentions = outputs.attentions  
+
+# 选择最后一层的注意力权重
+# shape: (num_heads, seq_len, seq_len)
+last_layer_attention = attentions[-1][0]  
+# 对所有注意力头取均值
+mean_attention = last_layer_attention.mean(dim=0)  # shape: (seq_len, seq_len)
 </code></pre>
-<p>如果调试成功，就使用<code>hexo</code>推送博文。在部署之前需要配置好根目录和主题目录下的 <code>_config.yaml</code>文件以确保可以正常生成网页。</p>
-<pre><code class="bash">hexo clean
-hexo generate # 生成静态网站文件，将 Markdown 文件和其他资源转换为 HTML 文件。
-hexo deploy # 将生成的静态文件部署到指定的远程服务器或托管平台（如 GitHub Pages）。
+<p>使用 <code>output_attention=True</code> 来让模型的前向传播包含注意力，接下来使用 <code>matplotlib</code> 和 <code>seaborn</code> 来输出注意力可视化图。</p>
+<blockquote>
+<p>  直接分词得到的结果会有很多单词前面有一个符号 Ġ，这是因为在 Qwen 的词表中加入了很多 Ġ+单词组成的新词。这个 Ġ 可以表示这个词是独立的单词，或者表示单词前面有空格，用于更好地解码输出。</p>
+</blockquote>
+<pre><code class="python"># 可视化
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# 这一段单纯去掉了分词符号&quot;Ġ&quot;
+token_list = []
+for t in tokenizer.convert_ids_to_tokens(inputs[&quot;input_ids&quot;][0]):
+    if t.startswith(&quot;Ġ&quot;):
+        token_list.append(t[1:])
+    else:
+        token_list.append(t)
+
+sns.heatmap(
+    mean_attention.cpu().to(torch.float16).numpy(),  # 关键修改：转换为 float32
+    xticklabels=token_list,
+    yticklabels=token_list,
+    cmap=&quot;Blues&quot;
+)
+plt.xlabel(&quot;Attended Token&quot;)
+plt.ylabel(&quot;Query Token&quot;)
+plt.title(&quot;Qwen2 Last Layer Mean Attention (Across All Heads)&quot;)
+plt.show()
 </code></pre>
-<h2 id="一些小问题"><a href="#一些小问题" class="headerlink" title="一些小问题"></a>一些小问题</h2><h3 id="代码高亮"><a href="#代码高亮" class="headerlink" title="代码高亮"></a>代码高亮</h3><p>在 particlex 主题下，代码高亮和 <code>hexo</code> 的默认配置冲突，在根目录下的 <code>_config.yaml</code> 做出如下修改。</p>
-<pre><code class="yaml"># 旧版本
-highlight:
-    enable: false
-prismjs:
-    enable: false
-# 如果是 7.0.0+，去掉 highlight 和 prismjs
-syntax_highlighter:
+<p>很不巧的是，上面的这段是<code>prompt</code>的单词之间的自注意力，而我们需要的是看输出对输入的注意力。</p>
+<p><img src="/2025/03/13/vlm_attn_visualization/prompt-visualization.png"></p>
+<h2 id="1-2-输出对输入的注意力"><a href="#1-2-输出对输入的注意力" class="headerlink" title="1.2 输出对输入的注意力"></a>1.2 输出对输入的注意力</h2><p>使用 <code>output_attentions</code> 参数输出注意力，将输入输出拼接起来。<code>model()</code> 调用的是前向传播，返回输入序列</p>
+<pre><code class="python">inputs = model_inputs
+# 生成输出，并获取注意力权重
+with torch.no_grad():
+    generated_ids = model.generate(
+        **inputs,
+        max_new_tokens=50,  # 控制生成长度
+        return_dict_in_generate=True,  # 关键参数，确保输出包含 attentions
+        output_attentions=True  # 关键参数，返回注意力
+    )
+
+# 获取所有 token（输入 + 生成的输出）
+# full_input_ids = torch.cat([inputs.input_ids, generated_ids.sequences[:, inputs.input_ids.shape[1]:]], dim=1)
+full_input_ids = generated_ids.sequences
+
+# 提取注意力
+attentions = generated_ids.attentions  # shape: (num_layers, num_heads, seq_len, seq_len)
+last_layer_attention = attentions[-2][0].mean(dim=1)  # (batch, num_heads, seq_len, seq_len) -&gt; (batch, seq_len, seq_len)
+
+# 生成完整的 token 列表（输入 + 输出）
+token_list = tokenizer.convert_ids_to_tokens(full_input_ids[0])
 </code></pre>
-<p>在主题目录的配置文件<code>_config.yaml</code>中使用进行代码高亮的配置。</p>
-<pre><code class="yaml"># Highlight.js
-# https://highlightjs.org
-highlight:
-    enable: true
-    style: github
-</code></pre>
-<h3 id="博文中插入图像"><a href="#博文中插入图像" class="headerlink" title="博文中插入图像"></a>博文中插入图像</h3><p>需要在站点目录下的 <code>_config.yaml</code> 加上一个 </p>
-<pre><code class="yaml">post_asset_folder: true
-marked:
-  prependRoot: true
-  postAsset: true
-</code></pre>
-<p>然后再安装一个插件</p>
-<pre><code class="bash">npm install https://github.com/CodeFalling/hexo-asset-image -- save
-</code></pre>
-<p>这样在 <code>hexo new</code> 的时候就会创建一个和博文同名的文件夹，用于存放图像。在 markdown 文件里用标准的插入图像命令 <code>![]()</code>即可。</p>
-<pre><code class="markdown">![](&lt;文章名&gt;/&lt;图像名&gt;)
-</code></pre>
-<p>切记，<code>[]</code>中是空的，不然会出错。</p>
-<h3 id="博文置顶"><a href="#博文置顶" class="headerlink" title="博文置顶"></a>博文置顶</h3><p>暂未解决。</p>
+<p>绘图代码和上面一样，输出结果为</p>
+<p><img src="/2025/03/13/vlm_attn_visualization/prompt+output-use_cache.png"></p>
+<p>看到只有第一行显示，如果在输出的时候修改参数为 <code>use_cache=False</code> 就可以将其展开，但是是否可以考虑直接将上面的结果作为一个合并的输出。</p>
+<p><img src="/2025/03/13/vlm_attn_visualization/prompt+output.png"></p>
+<p>随后，选择回复前的那个Ċ作为对输入的全局信息的token，输出热图，如下图所示。</p>
+<p><img src="/2025/03/13/vlm_attn_visualization/C_attn2_prompt.png"></p>
+<h2 id="2-LLaVA-OneVision-Qwen2-注意力可视化"><a href="#2-LLaVA-OneVision-Qwen2-注意力可视化" class="headerlink" title="2. LLaVA-OneVision-Qwen2 注意力可视化"></a>2. LLaVA-OneVision-Qwen2 注意力可视化</h2><p>To be continued.</p>
 
     </div>
     
