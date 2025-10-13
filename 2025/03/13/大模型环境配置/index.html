@@ -288,8 +288,8 @@ tar -xvf cudnn-linux-x86_64-8.9.7.29_cuda11-archive.tar.xz # unzip
 </code></pre>
 <p>解压完成后会得到相应的文件夹。</p>
 <p><img src="/2025/03/13/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/image-20241102203027930.png"></p>
-<p>安装好之后将对应的 cudnn 文件加入 cuda 文件夹中即可插入使用。</p>
-<pre><code class="bash">CUDA_BASE=&quot;/path/to/your/cuda&quot;
+<p>安装好之后将对应的 cudnn 文件加入 cuda 文件夹中即可插入使用。这里的 <code>CUDA_BASE</code> 对应的是 <code>cuda-&lt;version&gt;</code> 的上一级（通常是 <code>/usr/local</code>）。</p>
+<pre><code class="bash">CUDA_BASE=&quot;/path/to/your/local&quot;
 cp include/cudnn*.h $&#123;CUDA_BASE&#125;/cuda-11.8/include/
 cp lib/libcudnn* $&#123;CUDA_BASE&#125;/cuda-11.8/lib64
 chmod a+r $&#123;CUDA_BASE&#125;/cuda-11.8/include/cudnn*.h $&#123;CUDA_BASE&#125;/cuda-11.8/lib64/libcudnn*
