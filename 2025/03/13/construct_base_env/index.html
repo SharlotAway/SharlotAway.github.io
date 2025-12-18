@@ -175,7 +175,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/Environment/" style="color: #00bcd4">
+                <a href="/tags/Environment/" style="color: #00a596">
                     Environment
                 </a>
             </span>
@@ -187,11 +187,11 @@
     <div class="content" v-pre>
         <p>这篇文章介绍在运行大模型之前的配置，包括从 Windows 平台远程连接 Linux 服务器，CUDA 和 cudnn 配置以及 Anaconda 的配置。</p>
 <h2 id="0-VSCode配置远程连接"><a href="#0-VSCode配置远程连接" class="headerlink" title="0. VSCode配置远程连接"></a>0. VSCode配置远程连接</h2><p>安装 <code>VSCode</code> 中的<code>Remote-SSH</code> 扩展，修改<code>ssh</code> 配置文件（可以在 VSCode 中打开新页面，然后 <code>ctrl</code>+<code>shift</code>+<code>p</code> 选择连接到主机）</p>
-<p><img src="/2025/03/13/construct_base_env/image-20241102162325268.png"></p>
+<p><img src="/2025/03/13/construct_base_env/0-1-ssh.png"></p>
 <p>选择“连接到主机”，可以看到已经连接过的主机以及添加和配置两个选项。</p>
-<p><img src="/2025/03/13/construct_base_env/image-20241102162357675.png"></p>
+<p><img src="/2025/03/13/construct_base_env/0-2-ssh-config.png"></p>
 <p>可以“+添加新的 SSH 主机“，然后输入 按照提示格式输入<code>ssh &lt;User&gt;@&lt;HostName&gt;:&lt;Port&gt; -&lt;Host&gt;</code> 建立新的连接。</p>
-<p><img src="/2025/03/13/construct_base_env/image-20241102162415763.png"></p>
+<p><img src="/2025/03/13/construct_base_env/0-3-ssh-connection.png"></p>
 <p>新建完成后就会在配置文件中出现相应的内容，格式如下。如果要修改连接的名称，修改 <code>&lt;Host&gt;</code> 即可。</p>
 <pre><code class="bash">Host &lt;Host&gt;
   HostName &lt;HostName&gt;
@@ -204,51 +204,60 @@
 <blockquote>
 <p>或者如果没有安装 CUDA Toolkit 的话就会导致输出 <code>nvcc: command not found</code></p>
 </blockquote>
-<p><img src="/2025/03/13/construct_base_env/image-20241102192847963.png"></p>
-<p><img src="/2025/03/13/construct_base_env/image-20241102192859663.png"></p>
+<p><img src="/2025/03/13/construct_base_env/1-1-nvidia-smi.png"></p>
+<p><img src="/2025/03/13/construct_base_env/1-2-EULA.png"></p>
 <p>从 CUDA Toolkit Archive （<a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-toolkit-archive">官网链接</a>）下载相应的 CUDA Toolkit。根据电脑配置选择（操作系统、结构、分布、系统版本以及安装器类型）根据固定指令下载。以 Ubuntu 18.04 为例，进入 cuda 下载目录，运行以下命令：</p>
 <pre><code class="bash">wget https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda_11.8.0_520.61.05_linux.run  # 从互联网上下载 cuda 安装器
 bash cuda_11.8.0_520.61.05_linux.run  # 运行安装程序
 </code></pre>
 <p>运行安装程序，如果没有出现错误信息，等待一会会跳出用户协议，输入 accept 继续。</p>
-<p><img src="/2025/03/13/construct_base_env/image-20241102192723385.png"></p>
+<p><img src="/2025/03/13/construct_base_env/1-3-cuda-install-settings.png"></p>
 <p>下一步，去掉驱动器（Driver）前面的√，不更新驱动。</p>
-<p><img src="/2025/03/13/construct_base_env/image-20241102193925338.png"></p>
+<p><img src="/2025/03/13/construct_base_env/1-4-permission-denied.png"></p>
 <p>出现权限问题，因为不是 rooter，所以无法在 <code>/usr/local/cuda-11.8</code> 安装 cuda，需要修改安装目录以及环境。</p>
-<p><img src="/2025/03/13/construct_base_env/image-20241102193054618.png"></p>
+<p><img src="/2025/03/13/construct_base_env/1-5-success-cuda1.png"></p>
 <pre><code class="bash">sh cuda_11.8.0_520.61.05_linux.run --installpath=path/to/your/cuda-11.8
 </code></pre>
-<p><img src="/2025/03/13/construct_base_env/image-20241102194145786.png"></p>
+<p><img src="/2025/03/13/construct_base_env/1-5-success-cuda2.pngpng"></p>
 <p>安装完成，根据提示添加环境变量。以下是命令：</p>
 <pre><code class="bash"># add PATH &amp; LD_LIBRARY_PATH
 export CUDA_HOME=/path/to/your/cuda-11.8
 export PATH=$CUDA_HOME/bin:$PATH
 export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 export PATH=$CUDA_HOME/lib64:$PATH
-
-# uninstall CUDA Toolkit
-cuda-11.8/bin/cuda-uninstaller
 </code></pre>
+<p>可以使用 <code>nvcc -V</code> 或者 <code>nvcc --version</code> 检查cuda版本<br><img src="/2025/03/13/construct_base_env/1-7-nvcc.png"></p>
 <h3 id="1-2-下载并配置-cuDNN"><a href="#1-2-下载并配置-cuDNN" class="headerlink" title="1.2. 下载并配置 cuDNN"></a>1.2. 下载并配置 cuDNN</h3><p>cuDNN 下载网址（<a target="_blank" rel="noopener" href="https://developer.nvidia.com/rdp/cudnn-archive">网页链接</a>），选择与 cuda 匹配的版本进行下载。下载 cuDNN 需要用邮箱在NVIDIA官网（<a target="_blank" rel="noopener" href="https://developer.nvidia.com/login">官网链接</a>）注册一个账户。如果直接使用 <code>wget</code> 下载会得到一个 <code>index.html</code> 文件。因此在本地下载后通过 Remote SSH 传入服务器。</p>
-<p><img src="/2025/03/13/construct_base_env/image-20241102191433513.png"></p>
+<p><img src="/2025/03/13/construct_base_env/1-8-choose-cudnn.png"></p>
 <p>成功上传服务器后解压文件。</p>
 <pre><code class="bash"># in your upload path
 unxz cudnn-linux-x86_64-8.9.7.29_cuda11-archive.tar.xz # remove xz
 tar -xvf cudnn-linux-x86_64-8.9.7.29_cuda11-archive.tar.xz # unzip
 </code></pre>
 <p>解压完成后会得到相应的文件夹。</p>
-<p><img src="/2025/03/13/construct_base_env/image-20241102203027930.png"></p>
+<p><img src="/2025/03/13/construct_base_env/1-9-unzip-cudnn.png"></p>
 <p>安装好之后将对应的 cudnn 文件加入 cuda 文件夹中即可插入使用。使用<code>-av</code> 将原文件（包括链接）复制到目标地址防止链接被识别为普通文件。</p>
 <pre><code class="bash">CUDA_HOME=&quot;/path/to/your/local/cuda-&lt;version&gt;&quot;
 cp -av include/cudnn*.h $&#123;CUDA_BASE&#125;/cuda-&lt;version&gt;/include/
 cp -av lib/libcudnn* $&#123;CUDA_BASE&#125;/cuda-&lt;version&gt;/lib64
 chmod a+r $&#123;CUDA_BASE&#125;/cuda-&lt;version&gt;/include/cudnn*.h $&#123;CUDA_BASE&#125;/cuda-&lt;version&gt;/lib64/libcudnn*
 </code></pre>
+<blockquote>
+<p>如果自定义路径安装而没有使用 <code>-av</code> 的话，可能会出现链接问题，报错如下。（自查）</p>
+<pre><code class="bash">/sbin/ldconfig.real: /usr/local/cuda/targets/x86_64-linux/lib/libcudnn_adv_train.&gt; so.8 is not a symbolic link
+/sbin/ldconfig.real: /usr/local/cuda/targets/x86_64-linux/lib/libcudnn_ops_train.so.8 is not a symbolic link
+/sbin/ldconfig.real: /usr/local/cuda/targets/x86_64-linux/lib/libcudnn_ops_infer.so.8 is not a symbolic link
+/sbin/ldconfig.real: /usr/local/cuda/targets/x86_64-linux/lib/libcudnn_cnn_train.so.8 is not a symbolic link
+/sbin/ldconfig.real: /usr/local/cuda/targets/x86_64-linux/lib/libcudnn.so.8 is not a symbolic link
+/sbin/ldconfig.real: /usr/local/cuda/targets/x86_64-linux/lib/libcudnn_cnn_infer.so.8 is not a symbolic link
+/sbin/ldconfig.real: /usr/local/cuda/targets/x86_64-linux/lib/libcudnn_adv_infer.so.8 is not a symbolic link
+</code></pre>
+</blockquote>
 <p>输入以下命令检查是否成功安装 cudnn。</p>
 <pre><code class="bash">cat /path/to/your/cuda-&lt;version&gt;/include/cudnn_version.h | grep CUDNN_MAJOR -A 2 
 </code></pre>
 <p>输出结果，可以看到 CUDNN，说明已经成功安装 cudnn。</p>
-<p><img src="/2025/03/13/construct_base_env/image-20241102204532616.png"></p>
+<p><img src="/2025/03/13/construct_base_env/1-10-check-cudnn.png"></p>
 <h2 id="2-Anaconda"><a href="#2-Anaconda" class="headerlink" title="2. Anaconda"></a>2. Anaconda</h2><h3 id="2-1-下载并在本地配置-Anaconda"><a href="#2-1-下载并在本地配置-Anaconda" class="headerlink" title="2.1 下载并在本地配置 Anaconda"></a>2.1 下载并在本地配置 Anaconda</h3><p>从<a target="_blank" rel="noopener" href="https://www.anaconda.com/download/success">官网</a> 下载最新的 Anaconda3，选择相应 Linux 版本，在指定目录下使用 <code>wget</code> 进行下载。可以根据需求下载 Anaconda 或者 Miniconda。</p>
 <pre><code class="bash"># /bin/bash
 wget https://repo.anaconda.com/archive/Anaconda3-2024.10-1-Linux-x86_64.sh # Anaconda
@@ -260,9 +269,8 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh # Min
 bash Miniconda3-latest-Linux-x86_64.sh
 </code></pre>
 <p>运行脚本后，会出现用户协议的阅读，一直回车到出现 “yes” or “no” 的选项。可以在输入 yes 后的提示框中输入具体路径并用回车安装（必须是空路径）。直接回车就是默认路径。</p>
-<p><img src="/2025/03/13/construct_base_env/image-20241102164123643.png"></p>
+<p><img src="/2025/03/13/construct_base_env/3-1-anaconda-location.png"></p>
 <p>安装完选择是否用 conda 环境初始化，即用 conda base 环境替换 <code>$SHELL</code>。仅修改当前权限下的 <code>.bashrc</code>。输入 yes，再次打开命令行的时候最前面就会有一个 <code>(base)</code>。</p>
-<p><img src="/2025/03/13/construct_base_env/image-20241102164605317.png"></p>
 <p> 输入<code>conda --version</code> 检查安装是否成功。</p>
 <pre><code class="bash">conda --version
 # response
@@ -311,11 +319,11 @@ git config --list
 <pre><code class="bash"># generate private keys
 ssh-keygen -t rsa
 </code></pre>
-<p><img src="/2025/03/13/construct_base_env/image-20241102213235724.png"></p>
+<p><img src="/2025/03/13/construct_base_env/3-1-ssh-keygen.png"></p>
 <p>将 <code>id_rsa.pub</code> 中的内容复制到 <code>github</code> 个人主页（<code>https://github.com/settings/profile</code>）然后在 access 中找到 <em>SSH and GPG keys</em>。</p>
-<p><img src="/2025/03/13/construct_base_env/image-20241102213324385.png"></p>
+<p><img src="/2025/03/13/construct_base_env/3-2-add-id_rsa.png"></p>
 <p>通过在 SSH keys 中 添加新的 SSH key，将<code>id_rsa.pub</code> 中的内容粘贴进去然后保存即可。</p>
-<p><img src="/2025/03/13/construct_base_env/image-20241102213509837.png"></p>
+<hr>
 <p>以 <code>llava-next</code> 为例，使用 <code>git@</code> 似乎会遇到一点问题。</p>
 <pre><code class="bash">git clone https://github.com/LLaVA-VL/LLaVA-NeXT.git
 </code></pre>
@@ -327,7 +335,6 @@ wget https://github.com/git-lfs/git-lfs/releases/download/v3.5.1/git-lfs-linux-a
 tar -zx git-lfs-linux-amd64-v3.5.1.tar.gz
 </code></pre>
 <p>解压后得到一个对应版本的文件夹，里面有个 <code>install.sh</code>，是将 <code>git-lfs</code> 命令下载到<code>/usr/local</code> 中，在文件中修改 <code>prefix</code> 变量可以修改下载路径，将 <code>git-lfs</code> 下载到指定位置。之前使用 <code>git lfs install</code> 一直找不到命令是因为没有将自定义后的 <code>prefix</code> 这个位置加入环境变量导致系统无法找到，修改 <code>~/.bashrc</code> 可以解决这个问题。</p>
-<p><img src="/2025/03/13/construct_base_env/image-20241102205615456.png"></p>
 <pre><code class="bash"># export PATH
 export PATH=$PATH:/path/to/your/lfs/bin
 # initialize git-lfs
@@ -336,7 +343,7 @@ git lfs install
 Git LFS initialized.
 </code></pre>
 <blockquote>
-<h1 id="替代方案"><a href="#替代方案" class="headerlink" title="替代方案"></a>替代方案</h1><p>参考 <a target="_blank" rel="noopener" href="https://github.com/git-lfs/git-lfs/blob/main/INSTALLING.md">LFS 官方仓库</a> 进行下载。</p>
+<h3 id="安装-git-lfs-替代方案"><a href="#安装-git-lfs-替代方案" class="headerlink" title="安装 git-lfs 替代方案"></a>安装 git-lfs 替代方案</h3><p>参考 <a target="_blank" rel="noopener" href="https://github.com/git-lfs/git-lfs/blob/main/INSTALLING.md">LFS 官方仓库</a> 进行下载。</p>
 <ul>
 <li>apt&#x2F;deb: <code>sudo apt-get install git-lfs</code></li>
 <li>yum&#x2F;rpm: <code>sudo yum install git-lfs</code></li>
@@ -347,6 +354,58 @@ Git LFS initialized.
 git xet install
 </code></pre>
 <p>我这里是一直安装 Homebrew 失败，从仓库下载 <code>install.sh</code> 进行安装</p>
+<pre><code class="bash">curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+# 或者使用 wget
+wget https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+</code></pre>
+<p>然后 <code>bash install.sh</code> 即可，安装完之后有一系列警告和建议：</p>
+<pre><code class="bash">==&gt; Pouring portable-ruby-3.4.7.x86_64_linux.bottle.tar.gz
+Warning: /home/linuxbrew/.linuxbrew/bin is not in your PATH.
+  Instructions on how to configure your shell for Homebrew
+  can be found in the &#39;Next steps&#39; section below.
+==&gt; Installation successful!
+
+==&gt; Homebrew has enabled anonymous aggregate formulae and cask analytics.
+Read the analytics documentation (and how to opt-out) here:
+  https://docs.brew.sh/Analytics
+No analytics data has been sent yet (nor will any be during this install run).
+
+==&gt; Homebrew is run entirely by unpaid volunteers. Please consider donating:
+  https://github.com/Homebrew/brew#donations
+
+==&gt; Next steps:
+- Run these commands in your terminal to add Homebrew to your PATH:
+    echo &gt;&gt; /root/.bashrc
+    echo &#39;eval &quot;$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)&quot;&#39; &gt;&gt; /root/.bashrc
+    eval &quot;$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)&quot;
+- Run these commands in your terminal to add the non-default Git remotes for Homebrew/brew and Homebrew/homebrew-core:
+    echo &#39;# Set non-default Git remotes for Homebrew/brew and Homebrew/homebrew-core.&#39; &gt;&gt; /root/.bashrc
+    echo &#39;export HOMEBREW_BREW_GIT_REMOTE=&quot;https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git&quot;&#39; &gt;&gt; /root/.bashrc
+    echo &#39;export HOMEBREW_CORE_GIT_REMOTE=&quot;https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git&quot;&#39; &gt;&gt; /root/.bashrc
+    export HOMEBREW_BREW_GIT_REMOTE=&quot;https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git&quot;
+    export HOMEBREW_CORE_GIT_REMOTE=&quot;https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git&quot;
+- Install Homebrew&#39;s dependencies if you have sudo access:
+    sudo apt-get install build-essential
+  For more information, see:
+    https://docs.brew.sh/Homebrew-on-Linux
+- We recommend that you install GCC:
+    brew install gcc
+- Run brew help to get started
+- Further documentation:
+    https://docs.brew.sh
+</code></pre>
+<p>接着使用 <code>git-xet</code> 从 <code>hf-mirror.com</code> 下载模型的时候出现了只能下载仓库里的文件而无法下载 <code>.safetensors</code> 文件的情况。报错信息如下：</p>
+<pre><code class="bash">Downloading model.safetensors (1.8 GB)
+Error downloading object: model.safetensors (4051aba): Smudge error: Error downloading model.safetensors (4051aba9a46a44692e920a52a03829d011379c1d5e347d8dd353bf7642e7ed74): LFS: Get &quot;省略&quot;: dial tcp: lookup cas-bridge.xethub.hf-mirror.org on 8.8.8.8:53: no such host
+
+Errors logged to &#39;/root/commonfile/model_weights/llava-ov/llava-onevision-qwen2-0.5b-ov/.git/lfs/logs/20251218T143956.921962472.log&#39;.
+Use `git lfs logs last` to view the log.
+error: external filter &#39;git-lfs filter-process&#39; failed
+fatal: model.safetensors: smudge filter lfs failed
+warning: Clone succeeded, but checkout failed.
+You can inspect what was checked out with &#39;git status&#39;
+and retry with &#39;git restore --source=HEAD :/&#39;
+</code></pre>
 
     </div>
     
