@@ -441,7 +441,9 @@ The current active token is: `&lt;TOKEN_NAME&gt;`
 Downloading (incomplete total...):  65%|█████████████████████████████████████████▊                      | 9.66G/14.8G [14:26&lt;06:17, 13.6MB/s]
 Fetching 18 files:  33%|████████████████████████████▋                                                         | 6/18 [00:05&lt;00:09,  1.33it/s]
 </code></pre>
-<p><img src="/2025/03/13/construct_base_env/3-3-hf-download.png"></p>
+<p>仓库的名字从 <code>huggingface</code> 中复制，例如</p>
+<p><img src="/2025/03/13/construct_base_env/3-4-repository-name.png"></p>
+<p>如果没有指定 <code>--local-dir</code> 的话，会把仓库安装到 <code>~/.cache/huggingface/hub/models--&lt;repo-name&gt;</code>。</p>
 
     </div>
     
