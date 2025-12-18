@@ -406,6 +406,42 @@ warning: Clone succeeded, but checkout failed.
 You can inspect what was checked out with &#39;git status&#39;
 and retry with &#39;git restore --source=HEAD :/&#39;
 </code></pre>
+<p>干脆别用 <code>git-xet</code> 了，尝试使用 <code>huggingface-cli</code>。</p>
+<pre><code class="bash">curl -LsSf https://hf.co/cli/install.sh | bash # 安装 hf
+hf --help # 检查 hf 安装
+</code></pre>
+<p>直接使用的话会连接 Huggingface 网站，一般来说无法连通，（报错为 <code>httpx.ConnectError: [Errno 101] Network is unreachable</code>）。更改连接地址到镜像（可以添加到 <code>~/.bashrc</code> 中更改默认环境变量）。这里的 token 需要从 <a href="huggingface.co/settings/tokens">huggingface.co&#x2F;settings&#x2F;tokens</a> 进行下载。</p>
+<pre><code class="bash">export HF_ENDPOINT=https://hf-mirror.com
+hf auth login # 登录
+</code></pre>
+<pre><code>########################################
+#  HUGGINGFACE
+########################################
+
+    To log in, `huggingface_hub` requires a token generated from https://huggingface.co/settings/tokens .
+Enter your token (input will not be visible): 
+Add token as git credential? [y/N]: y
+Token is valid (permission: read).
+###########################
+# The token `&lt;TOKEN_NAME&gt;` has been saved to /root/.cache/huggingface/stored_tokens
+# Cannot authenticate through git-credential as no helper is defined on your machine.
+# You might have to re-authenticate when pushing to the Hugging Face Hub.
+# Run the following command in your terminal in case you want to set the &#39;store&#39; credential helper as default.
+
+# git config --global credential.helper store
+
+# Read https://git-scm.com/book/en/v2/Git-Tools-Credential-Storage for more details.
+Token has not been saved to git credential helper.
+Your token has been saved to /root/.cache/huggingface/token
+Login successful.
+The current active token is: `&lt;TOKEN_NAME&gt;`
+</code></pre>
+<p>使用 <code>hf download</code> 下载模型权重。下载的时候会显示下载进度条。</p>
+<pre><code class="bash">hf download lmms-lab/llava-onevision-qwen2-7b-ov
+Downloading (incomplete total...):  65%|█████████████████████████████████████████▊                      | 9.66G/14.8G [14:26&lt;06:17, 13.6MB/s]
+Fetching 18 files:  33%|████████████████████████████▋                                                         | 6/18 [00:05&lt;00:09,  1.33it/s]
+</code></pre>
+<p><img src="/2025/03/13/construct_base_env/3-3-hf-download.png"></p>
 
     </div>
     
