@@ -35,6 +35,11 @@
 <script src="/js/lib/highlight.js"></script>
 
 
+<script src="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.css" />
+<script src="/js/lib/math.js"></script>
+
 
 <script src="/js/lib/preview.js"></script>
 
@@ -55,7 +60,7 @@
             <div id="loading" v-show="loading">
                 <div id="loading-circle">
                     <h2>LOADING</h2>
-                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <p>加载较慢时，请确认浏览器已开启缓存。</p>
                     <img src="/images/loading_furina.gif" />
                 </div>
             </div>
@@ -76,7 +81,7 @@
             <span>&ensp;关于</span>
         </a>
         
-        <a href="/#home-posts-wrap">
+        <a href="/archives/">
             <i class="fa-solid fa-book-open-reader fa-fw"></i>
             <span>&ensp;文章</span>
         </a>
@@ -123,7 +128,7 @@
                     </div>
                 </a>
                 
-                <a href="/#home-posts-wrap">
+                <a href="/archives/">
                     <div class="item">
                         <div style="min-width: 20px; max-width: 50px; width: 10%">
                             <i class="fa-solid fa-book-open-reader fa-fw"></i>
@@ -180,6 +185,15 @@
             2025/3/13
         </span>
         
+        <span class="category">
+            <a href="/categories/%E5%A4%9A%E6%A8%A1%E6%80%81%E5%AE%9E%E8%B7%B5/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                多模态实践
+            </a>
+        </span>
+        
         
         <span class="tags">
             <span class="icon">
@@ -189,14 +203,21 @@
             
             <span class="tag">
                 
-                <a href="/tags/Visualization/" style="color: #03a9f4">
+                <a href="/tags/VLM/" style="color: #00a596">
+                    VLM
+                </a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/Visualization/" style="color: #00bcd4">
                     Visualization
                 </a>
             </span>
             
             <span class="tag">
                 
-                <a href="/tags/Qwen2/" style="color: #00bcd4">
+                <a href="/tags/Qwen2/" style="color: #03a9f4">
                     Qwen2
                 </a>
             </span>

@@ -3,7 +3,7 @@
 <html lang="Zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>tags | SharlotAway</title>
+    <title>标签 | SharlotAway</title>
     <meta name="author" content="Sharlot Away" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -35,12 +35,13 @@
 <script src="/js/lib/highlight.js"></script>
 
 
+<script src="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.css" />
+<script src="/js/lib/math.js"></script>
+
 
 <script src="/js/lib/preview.js"></script>
-
-
-
-
 
 
 
@@ -55,7 +56,7 @@
             <div id="loading" v-show="loading">
                 <div id="loading-circle">
                     <h2>LOADING</h2>
-                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <p>加载较慢时，请确认浏览器已开启缓存。</p>
                     <img src="/images/loading_furina.gif" />
                 </div>
             </div>
@@ -76,7 +77,7 @@
             <span>&ensp;关于</span>
         </a>
         
-        <a href="/#home-posts-wrap">
+        <a href="/archives/">
             <i class="fa-solid fa-book-open-reader fa-fw"></i>
             <span>&ensp;文章</span>
         </a>
@@ -123,7 +124,7 @@
                     </div>
                 </a>
                 
-                <a href="/#home-posts-wrap">
+                <a href="/archives/">
                     <div class="item">
                         <div style="min-width: 20px; max-width: 50px; width: 10%">
                             <i class="fa-solid fa-book-open-reader fa-fw"></i>
@@ -168,30 +169,210 @@
 </transition>
 
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-            <div class="article">
-    <div>
-        <h1>tags</h1>
-    </div>
-    <div class="info">
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2025/3/12
+            <div id="archives">
+    
+    <div class="categories-tags">
+        
+        
+        
+        <span>
+            <a href="/tags/Introduction/" style="background: #03a9f4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                Introduction
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/Hexo/" style="background: #00a596">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                Hexo
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/Blog/" style="background: #ff7d73">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                Blog
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/VLM/" style="background: #ffa2c4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                VLM
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/CLIP/" style="background: #03a9f4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                CLIP
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/SigLIP/" style="background: #00bcd4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                SigLIP
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/Environment/" style="background: #03a9f4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                Environment
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/CUDA/" style="background: #ffa2c4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                CUDA
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/Anaconda/" style="background: #03a9f4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                Anaconda
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/LLMs/" style="background: #ffa2c4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                LLMs
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/HuggingFace/" style="background: #ff7d73">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                HuggingFace
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/LLaVA/" style="background: #ffa2c4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                LLaVA
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/Visualization/" style="background: #00bcd4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                Visualization
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/Qwen2/" style="background: #ff7d73">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                Qwen2
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/Qwen-VL/" style="background: #00bcd4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                Qwen-VL
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/Qwen2-VL/" style="background: #00a596">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                Qwen2-VL
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/Qwen3-VL/" style="background: #ffa2c4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                Qwen3-VL
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/tags/LLM/" style="background: #00bcd4">
+                <span class="icon">
+                    <i class="fa-solid fa-tags fa-fw"></i>
+                </span>
+                LLM
+            </a>
         </span>
         
         
     </div>
-    
-    <div class="content" v-pre>
-        
-    </div>
-    
-    
-    
-    
-    
-    
     
 </div>
 
@@ -223,12 +404,6 @@
         
     </div>
     <script src="/js/main.js"></script>
-    
-    
-
-
-
-
     
 </body>
 </html>

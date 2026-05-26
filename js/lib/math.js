@@ -11,6 +11,7 @@ mixins.math = {
                     { left: "\\(", right: "\\)", display: false },
                     { left: "\\[", right: "\\]", display: true },
                 ],
+                throwOnError: false,
             });
         },
     },

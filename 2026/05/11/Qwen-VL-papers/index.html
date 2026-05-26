@@ -35,6 +35,11 @@
 <script src="/js/lib/highlight.js"></script>
 
 
+<script src="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.css" />
+<script src="/js/lib/math.js"></script>
+
 
 <script src="/js/lib/preview.js"></script>
 
@@ -55,7 +60,7 @@
             <div id="loading" v-show="loading">
                 <div id="loading-circle">
                     <h2>LOADING</h2>
-                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <p>加载较慢时，请确认浏览器已开启缓存。</p>
                     <img src="/images/loading_furina.gif" />
                 </div>
             </div>
@@ -76,7 +81,7 @@
             <span>&ensp;关于</span>
         </a>
         
-        <a href="/#home-posts-wrap">
+        <a href="/archives/">
             <i class="fa-solid fa-book-open-reader fa-fw"></i>
             <span>&ensp;文章</span>
         </a>
@@ -123,7 +128,7 @@
                     </div>
                 </a>
                 
-                <a href="/#home-posts-wrap">
+                <a href="/archives/">
                     <div class="item">
                         <div style="min-width: 20px; max-width: 50px; width: 10%">
                             <i class="fa-solid fa-book-open-reader fa-fw"></i>
@@ -180,6 +185,15 @@
             2026/5/11
         </span>
         
+        <span class="category">
+            <a href="/categories/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%AE%BA%E6%96%87/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                多模态论文
+            </a>
+        </span>
+        
         
         <span class="tags">
             <span class="icon">
@@ -196,8 +210,22 @@
             
             <span class="tag">
                 
-                <a href="/tags/Qwen-VL/" style="color: #00a596">
+                <a href="/tags/Qwen-VL/" style="color: #ffa2c4">
                     Qwen-VL
+                </a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/Qwen2-VL/" style="color: #03a9f4">
+                    Qwen2-VL
+                </a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/Qwen3-VL/" style="color: #00a596">
+                    Qwen3-VL
                 </a>
             </span>
             
@@ -221,12 +249,16 @@
 <p>绝对位置编码：在 Cross Attention 的键值对上增加二维绝对位置编码</p>
 <blockquote>
 <p>  <strong>绝对位置编码</strong></p>
-<p>  对于一个在二维网格中坐标为 $(i,j)$ 的图像块，通过 $PE(\cdot)$ 给它编码位置信息，在两个维度分别得到一个 $D&#x2F;2$ 维的位置编码，拼接得到最终的位置编码<br>  $$<br>  PE(i,j)&#x3D;\mathrm{Concat}(PE_h(i), PE_w(j))<br>  $$</p>
+<p>  对于一个在二维网格中坐标为 <span class="math-inline">$(i,j)$</span> 的图像块，通过 <span class="math-inline">$PE(\cdot)$</span> 给它编码位置信息，在两个维度分别得到一个 <span class="math-inline">$D/2$</span> 维的位置编码，拼接得到最终的位置编码
+  </p>
+<div class="math-display">$$
+PE(i,j)=\mathrm{Concat}(PE_h(i), PE_w(j))
+$$</div>
 </blockquote>
 <h3 id="输入输出"><a href="#输入输出" class="headerlink" title="输入输出"></a>输入输出</h3><p>图像输入：在图像特征的开头和结尾添加<code>&lt;img&gt;</code>和<code>&lt;/img&gt;</code>两个标记（token）表示图像特征。</p>
-<p>边界框输入输出：通过将边界框位置归一化到 $[0,1000)$ 之后编码到文本中确定位置,因此不需要额外的位置词汇。</p>
+<p>边界框输入输出：通过将边界框位置归一化到 <span class="math-inline">$[0,1000)$</span> 之后编码到文本中确定位置,因此不需要额外的位置词汇。</p>
 <blockquote>
-<p>  边界框串格式：<code>&lt;box&gt;</code>$(X_\text{topleft},Y_\text{topleft}),(X_\text{bottomrigh}, Y_\text{bottomright})$<code>&lt;/box&gt;</code>，该位置相当于两个顶点在图中的千分位位置。</p>
+<p>  边界框串格式：<code>&lt;box&gt;</code><span class="math-inline">$(X_\text{topleft},Y_\text{topleft}),(X_\text{bottomrigh}, Y_\text{bottomright})$</span><code>&lt;/box&gt;</code>，该位置相当于两个顶点在图中的千分位位置。</p>
 <p>  输出格式<code>&lt;ref&gt;</code>[边界框对应的目标]<code>&lt;/ref&gt;</code> <code>&lt;box&gt;</code>[边界框坐标]<code>&lt;/box&gt;</code></p>
 </blockquote>
 <p><strong>数据示例</strong></p>
@@ -262,15 +294,24 @@ Assistant: is Yellow cross country ski racing gloves&lt;eos&gt;
 <p><img src="/2026/05/11/Qwen-VL-papers/Qwen2-VL-architecture.png"></p>
 <p><strong>Naive Dynamic Resolution</strong></p>
 <p>Qwen2-VL 支持任意分辨率的输入（但是通常设置了最小分辨率和最大分辨率）。</p>
-<p>绝对位置编码 $\to$ 2D-RoPE</p>
+<p>绝对位置编码 <span class="math-inline">$\to$</span> 2D-RoPE</p>
 <blockquote>
-<p>  <strong>2D-RoPE</strong> 是一种原位变换，对于网格坐标为 $(i,j)$ 的图像块，特征为 $\mathbf{x}$，通过矩阵乘法将特征旋转得到编码后的特征<br>  $$<br>  \mathbf{x}<em>{2D\text{-}RoPE} &#x3D; \begin{bmatrix} \mathbf{R}</em>{h}(i, \theta) &amp; 0 \ 0 &amp; \mathbf{R}<em>{w}(j, \theta) \end{bmatrix} \mathbf{x}<br>  $$<br>  $R</em>{h&#x2F;w}(\mathrm{pos},\theta)$ 是 1D 旋转矩阵，分别对高、宽进行处理，$\theta$ 是预定义的频率基数。一般来说，对于分配了 $D$ 维的轴，它的每个维度 $(d,d+1)$ 都有一个特定频率；在其中，维度对的索引 $k\in[0,D&#x2F;2)$ 对应的频率基是<br>  $$<br>  \theta_k&#x3D;10000^{-2k&#x2F;D}<br>  $$</p>
+<p>  <strong>2D-RoPE</strong> 是一种原位变换，对于网格坐标为 <span class="math-inline">$(i,j)$</span> 的图像块，特征为 <span class="math-inline">$\mathbf{x}$</span>，通过矩阵乘法将特征旋转得到编码后的特征
+  </p>
+<div class="math-display">$$
+\mathbf{x}_{2D\text{-}RoPE} = \begin{bmatrix} \mathbf{R}_{h}(i, \theta) &amp; 0 \\ 0 &amp; \mathbf{R}_{w}(j, \theta) \end{bmatrix} \mathbf{x}
+$$</div>
+<p>  <span class="math-inline">$R_{h/w}(\mathrm{pos},\theta)$</span> 是 1D 旋转矩阵，分别对高、宽进行处理，<span class="math-inline">$\theta$</span> 是预定义的频率基数。一般来说，对于分配了 <span class="math-inline">$D$</span> 维的轴，它的每个维度 <span class="math-inline">$(d,d+1)$</span> 都有一个特定频率；在其中，维度对的索引 <span class="math-inline">$k\in[0,D/2)$</span> 对应的频率基是 
+  </p>
+<div class="math-display">$$
+\theta_k=10000^{-2k/D}
+$$</div>
 </blockquote>
-<p>由于多张图的尺寸可能不同，直接做 Stack 行不通，Padding 长度差距太大，Qwen2-VL 采用了 packing，将多个图直接拼接到一个序列中，并控制序列长度。同时，在 ViT 后面接了一个 MLP 层将相邻的 $2\times 2$ 词元压缩成一个。</p>
-<p><strong>RoPE $\to$ M-RoPE</strong></p>
+<p>由于多张图的尺寸可能不同，直接做 Stack 行不通，Padding 长度差距太大，Qwen2-VL 采用了 packing，将多个图直接拼接到一个序列中，并控制序列长度。同时，在 ViT 后面接了一个 MLP 层将相邻的 <span class="math-inline">$2\times 2$</span> 词元压缩成一个。</p>
+<p><strong>RoPE <span class="math-inline">$\to$</span> M-RoPE</strong></p>
 <p>处理文本的时候，是 1D-RoPE；处理图像的时候，是 2D-RoPE；处理视频的时候，是 3D-RoPE。当碰到多个模态组合的时候，是按照最高维度的对角线往后排列的，可以看下图的示意。</p>
 <blockquote>
-<p>  例如视频的三个维度分别是 $2,2,3$，那么在位置编码空间中一定要给这个模态分配一个 $3\times 3\times 3$ 的空间，然后后续的模态所有维度的位置编码索引将从 $4$ 开始</p>
+<p>  例如视频的三个维度分别是 <span class="math-inline">$2,2,3$</span>，那么在位置编码空间中一定要给这个模态分配一个 <span class="math-inline">$3\times 3\times 3$</span> 的空间，然后后续的模态所有维度的位置编码索引将从 <span class="math-inline">$4$</span> 开始</p>
 </blockquote>
 <p><img src="/2026/05/11/Qwen-VL-papers/M-RoPE.png"></p>
 <p><strong>同一的图像&#x2F;视频理解</strong></p>
@@ -314,12 +355,12 @@ Assistant: is Yellow cross country ski racing gloves&lt;eos&gt;
 </blockquote>
 <p><strong>Vision Encoder：</strong> 沿用 ViT 结构，</p>
 <ul>
-<li><p>大多数层（只有 4 层使用全局注意力）使用窗口注意力（$8\times 8$ 由个图像块组成，小于这个尺度不进行 Padding）减小注意力开销；</p>
+<li><p>大多数层（只有 4 层使用全局注意力）使用窗口注意力（<span class="math-inline">$8\times 8$</span> 由个图像块组成，小于这个尺度不进行 Padding）减小注意力开销；</p>
 <p><img src="/2026/05/11/Qwen-VL-papers/Qwen2.5-VL-window-attention.png"></p>
 </li>
 <li><p>采用 2D-RoPE 捕捉位置信息，视频输入采用 3D-RoPE，将连续的两帧组合到一起；</p>
 </li>
-<li><p>训练和推理都须将图像宽高缩放到28的整数倍，然后切成 $14\times 14$ 的图像块进行编码。</p>
+<li><p>训练和推理都须将图像宽高缩放到28的整数倍，然后切成 <span class="math-inline">$14\times 14$</span> 的图像块进行编码。</p>
 </li>
 <li><p>为了和 LLM 更好配合，使用了 RMSNorm 和 SwiGLU</p>
 </li>
@@ -327,7 +368,7 @@ Assistant: is Yellow cross country ski racing gloves&lt;eos&gt;
 </li>
 </ul>
 <p><img src="/2026/05/11/Qwen-VL-papers/Qwen2.5-VL-ViT.png"></p>
-<p><strong>MLP-based VL Merger：</strong> 在图像特征进入 LLM 前通过 Merger 进行压缩。首先将空间上相邻的四个图像块集合进行分组，拼接，然后通过一个 2 层 MLP 投影至文本空间（实际就是 LLaVA-NeXT 的投影，具体实现的时候也进行了 $2\times 2$ 压缩）</p>
+<p><strong>MLP-based VL Merger：</strong> 在图像特征进入 LLM 前通过 Merger 进行压缩。首先将空间上相邻的四个图像块集合进行分组，拼接，然后通过一个 2 层 MLP 投影至文本空间（实际就是 LLaVA-NeXT 的投影，具体实现的时候也进行了 <span class="math-inline">$2\times 2$</span> 压缩）</p>
 <h3 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h3><p><strong>Native Dynamic Resolution and Frame Rate</strong> 使模型更好感知真实物理量（空间位置，时间流逝）</p>
 <ol>
 <li>不再缩放到固定尺寸，而是动态视觉分词并编码；</li>
@@ -348,7 +389,7 @@ Assistant: is Yellow cross country ski racing gloves&lt;eos&gt;
 <ul>
 <li>第一阶段使用 Qwen2-VL-Instag 将 QA 划分为 8 个主领域和 30 个细粒度子域；</li>
 <li>第二阶段基于规则提出错误、不完整和有害的样本；然后基于 Qwen2.5-VL 系列训练的奖励模型在复杂度、相关性、正确性、清晰度和帮助性多个维度进行打分；</li>
-<li>&#x3D;&#x3D;拒绝采样&#x3D;&#x3D;：针对 CoT 的推理优化。（1）用中间版本对含 GT 的难题集生成多个预测答案以及推理步骤，（2）仅保留最终结果与 GT 完全匹配的样本；（3）对中间过程进行约束，包括代码切换，翻译不自然，长度过长火模式重复。</li>
+<li><mark>拒绝采样</mark>：针对 CoT 的推理优化。（1）用中间版本对含 GT 的难题集生成多个预测答案以及推理步骤，（2）仅保留最终结果与 GT 完全匹配的样本；（3）对中间过程进行约束，包括代码切换，翻译不自然，长度过长火模式重复。</li>
 </ul>
 </li>
 <li><p>使用 DPO 对齐人类意图：将图像-文本数据和纯文本数据利用偏好数据将模型行为对齐人类意图，每个样本仅处理一次，确保优化过程高效性。</p>
@@ -368,9 +409,19 @@ Assistant: is Yellow cross country ski racing gloves&lt;eos&gt;
 <p><strong>Vision Encoder：</strong> （1）使用 SigLIP-2 架构和预训练权重，并用动态分辨率的策略继续训练的视觉编码器；（2）2D-RoPE + 绝对位置编码插值（CoMP），将相对位置和绝对位置结合；</p>
 <blockquote>
 <p>  <strong>Interleaved MRoPE</strong></p>
-<p>  传统的 RoPE 特征的维度切分成3块分给 $(t,h,w)$ 三个维度，类似于<br>  $$<br>  (t_1,t_2,\cdots,t_d,h_1,h_2,\cdots,h_d,w_1,w_2,\cdots,w_d)<br>  $$<br>  因为 Transformer 的注意力权重作用在整个 $D$ 维，学习到的 <strong>“低频语义”</strong>（捕捉全局、长程关系的神经元）会被迫集中在向量的末尾。因此会发生类似无法处理长视频的现象。Qwen3-VL 在位置编码上将三个维度的旋转位置编码穿插排列在嵌入维度中，类似于<br>  $$<br>  (t_1,h_1,w_1,t_2,h_2,w_2,\cdots,t_d,h_d,w_d)<br>  $$<br>  这样就可以在不同频段都处理三个轴的信息。</p>
+<p>  传统的 RoPE 特征的维度切分成3块分给 <span class="math-inline">$(t,h,w)$</span> 三个维度，类似于
+  </p>
+<div class="math-display">$$
+(t_1,t_2,\cdots,t_d,h_1,h_2,\cdots,h_d,w_1,w_2,\cdots,w_d)
+$$</div>
+<p>  因为 Transformer 的注意力权重作用在整个 <span class="math-inline">$D$</span> 维，学习到的 <strong>“低频语义”</strong>（捕捉全局、长程关系的神经元）会被迫集中在向量的末尾。因此会发生类似无法处理长视频的现象。Qwen3-VL 在位置编码上将三个维度的旋转位置编码穿插排列在嵌入维度中，类似于
+  </p>
+<div class="math-display">$$
+(t_1,h_1,w_1,t_2,h_2,w_2,\cdots,t_d,h_d,w_d)
+$$</div>
+<p>  这样就可以在不同频段都处理三个轴的信息。</p>
 </blockquote>
-<p><strong>MLP-based VL Merger：</strong>（1） 2 层 MLP 对 $2\times 2$ 区域进行压缩和投影；（2）适配 DeepStack 机制的 Merger</p>
+<p><strong>MLP-based VL Merger：</strong>（1） 2 层 MLP 对 <span class="math-inline">$2\times 2$</span> 区域进行压缩和投影；（2）适配 DeepStack 机制的 Merger</p>
 <blockquote>
 <p>  <strong>DeepStack</strong></p>
 <p>  Qwen3-VL 的 DeepStack 设计是从 Vision Encoder 的多个中间层提取不同层级的特征，然后通过专属 Merger 映射到多个 LLM 层中。这种思路的优势在于</p>
