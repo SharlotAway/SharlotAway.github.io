@@ -25,16 +25,16 @@ const app = Vue.createApp({
         },
         handleScroll() {
             let wrap = this.$refs.homePostsWrap;
+            let head = document.getElementById("home-head");
             let newScrollTop = document.documentElement.scrollTop;
             if (this.scrollTop < newScrollTop) {
                 this.hiddenMenu = true;
                 this.showMenuItems = false;
             } else this.hiddenMenu = false;
             if (wrap) {
-                if (newScrollTop <= window.innerHeight - 100) this.menuColor = true;
+                let colorLine = head ? head.offsetHeight - 100 : window.innerHeight - 100;
+                if (newScrollTop <= colorLine) this.menuColor = true;
                 else this.menuColor = false;
-                if (newScrollTop <= 400) wrap.style.top = "-" + newScrollTop / 5 + "px";
-                else wrap.style.top = "-80px";
             }
             this.scrollTop = newScrollTop;
         },

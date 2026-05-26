@@ -8,7 +8,9 @@ mixins.home = {
     },
     methods: {
         homeClick() {
-            window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
+            document
+                .getElementById("home-posts-wrap")
+                ?.scrollIntoView({ behavior: "smooth" });
         },
     },
 };

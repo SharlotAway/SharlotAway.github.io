@@ -57,38 +57,43 @@
             </div>
         </transition>
         <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
-    <nav id="desktop-menu">
+    <nav id="desktop-menu" aria-label="主导航">
         <a class="title" href="/">
             <span>SHARLOTAWAY</span>
         </a>
         
         <a href="/">
             <i class="fa-solid fa-house fa-fw"></i>
-            <span>&ensp;Home</span>
+            <span>&ensp;首页</span>
         </a>
         
         <a href="/about/">
             <i class="fa-solid fa-id-card fa-fw"></i>
-            <span>&ensp;About</span>
+            <span>&ensp;关于</span>
         </a>
         
-        <a href="/archives">
+        <a href="/#home-posts-wrap">
+            <i class="fa-solid fa-book-open-reader fa-fw"></i>
+            <span>&ensp;文章</span>
+        </a>
+        
+        <a href="/archives/">
             <i class="fa-solid fa-box-archive fa-fw"></i>
-            <span>&ensp;Archives</span>
+            <span>&ensp;归档</span>
         </a>
         
-        <a href="/categories">
+        <a href="/categories/">
             <i class="fa-solid fa-bookmark fa-fw"></i>
-            <span>&ensp;Categories</span>
+            <span>&ensp;分类</span>
         </a>
         
         <a href="/tags/">
             <i class="fa-solid fa-tags fa-fw"></i>
-            <span>&ensp;Tags</span>
+            <span>&ensp;标签</span>
         </a>
         
     </nav>
-    <nav id="mobile-menu">
+    <nav id="mobile-menu" aria-label="移动端导航">
         <div class="title" @click="showMenuItems = !showMenuItems">
             <i class="fa-solid fa-bars fa-fw"></i>
             <span>&emsp;SHARLOTAWAY</span>
@@ -101,7 +106,7 @@
                         <div style="min-width: 20px; max-width: 50px; width: 10%">
                             <i class="fa-solid fa-house fa-fw"></i>
                         </div>
-                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">首页</div>
                     </div>
                 </a>
                 
@@ -110,25 +115,34 @@
                         <div style="min-width: 20px; max-width: 50px; width: 10%">
                             <i class="fa-solid fa-id-card fa-fw"></i>
                         </div>
-                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">关于</div>
                     </div>
                 </a>
                 
-                <a href="/archives">
+                <a href="/#home-posts-wrap">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-book-open-reader fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">文章</div>
+                    </div>
+                </a>
+                
+                <a href="/archives/">
                     <div class="item">
                         <div style="min-width: 20px; max-width: 50px; width: 10%">
                             <i class="fa-solid fa-box-archive fa-fw"></i>
                         </div>
-                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">归档</div>
                     </div>
                 </a>
                 
-                <a href="/categories">
+                <a href="/categories/">
                     <div class="item">
                         <div style="min-width: 20px; max-width: 50px; width: 10%">
                             <i class="fa-solid fa-bookmark fa-fw"></i>
                         </div>
-                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">分类</div>
                     </div>
                 </a>
                 
@@ -137,7 +151,7 @@
                         <div style="min-width: 20px; max-width: 50px; width: 10%">
                             <i class="fa-solid fa-tags fa-fw"></i>
                         </div>
-                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">标签</div>
                     </div>
                 </a>
                 
@@ -173,7 +187,7 @@
                         
                         <span class="tag">
                             
-                            <a href="/tags/LLMs/" style="color: #ffa2c4">
+                            <a href="/tags/LLMs/" style="color: #ff7d73">
                                 LLMs
                             </a>
                         </span>
@@ -202,7 +216,7 @@
                         
                         <span class="tag">
                             
-                            <a href="/tags/Introduction/" style="color: #ffa2c4">
+                            <a href="/tags/Introduction/" style="color: #03a9f4">
                                 Introduction
                             </a>
                         </span>
@@ -231,7 +245,7 @@
                         
                         <span class="tag">
                             
-                            <a href="/tags/Environment/" style="color: #03a9f4">
+                            <a href="/tags/Environment/" style="color: #ffa2c4">
                                 Environment
                             </a>
                         </span>
@@ -267,7 +281,7 @@
                         
                         <span class="tag">
                             
-                            <a href="/tags/Qwen2/" style="color: #ff7d73">
+                            <a href="/tags/Qwen2/" style="color: #00bcd4">
                                 Qwen2
                             </a>
                         </span>
@@ -332,21 +346,21 @@
                         
                         <span class="tag">
                             
-                            <a href="/tags/LLaVA/" style="color: #00a596">
+                            <a href="/tags/LLaVA/" style="color: #03a9f4">
                                 LLaVA
                             </a>
                         </span>
                         
                         <span class="tag">
                             
-                            <a href="/tags/SigLip/" style="color: #ffa2c4">
+                            <a href="/tags/SigLip/" style="color: #00a596">
                                 SigLip
                             </a>
                         </span>
                         
                         <span class="tag">
                             
-                            <a href="/tags/LLM/" style="color: #00a596">
+                            <a href="/tags/LLM/" style="color: #ffa2c4">
                                 LLM
                             </a>
                         </span>
@@ -375,14 +389,14 @@
                         
                         <span class="tag">
                             
-                            <a href="/tags/VLM/" style="color: #00a596">
+                            <a href="/tags/VLM/" style="color: #00bcd4">
                                 VLM
                             </a>
                         </span>
                         
                         <span class="tag">
                             
-                            <a href="/tags/CLIP/" style="color: #03a9f4">
+                            <a href="/tags/CLIP/" style="color: #ff7d73">
                                 CLIP
                             </a>
                         </span>
@@ -411,14 +425,14 @@
                         
                         <span class="tag">
                             
-                            <a href="/tags/VLM/" style="color: #00bcd4">
+                            <a href="/tags/VLM/" style="color: #ff7d73">
                                 VLM
                             </a>
                         </span>
                         
                         <span class="tag">
                             
-                            <a href="/tags/Qwen-VL/" style="color: #03a9f4">
+                            <a href="/tags/Qwen-VL/" style="color: #00bcd4">
                                 Qwen-VL
                             </a>
                         </span>
