@@ -3,7 +3,7 @@
 <html lang="Zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>helloworld | SharlotAway</title>
+    <title>站点使用指南 | SharlotAway</title>
     <meta name="author" content="Sharlot Away" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -181,21 +181,148 @@
         <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
             <div class="article">
     <div>
-        <h1>helloworld</h1>
+        <h1>站点使用指南</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2025/3/10
+            2025/3/11
         </span>
         
         
     </div>
     
     <div class="content" v-pre>
-        
+        <h1 id="Hexo-站点维护说明"><a href="#Hexo-站点维护说明" class="headerlink" title="Hexo 站点维护说明"></a>Hexo 站点维护说明</h1><p>这份文档面向当前仓库的维护者，重点说明目录组织、个人信息修改方式，以及如何新增文章与分类页面。</p>
+<h2 id="文档组织结构"><a href="#文档组织结构" class="headerlink" title="文档组织结构"></a>文档组织结构</h2><p>站点主要内容位于 <code>source/</code> 目录下：</p>
+<pre><code class="text">source/
+├─ _posts/
+│  ├─ blog-maintenance/          # 博客维护与 Hexo 使用说明
+│  ├─ llm-foundations/           # 大模型基础
+│  ├─ environment-setup/         # 环境配置
+│  ├─ multimodal-paper-notes/    # 多模态论文阅读
+│  └─ multimodal-practice/       # 多模态实验与工程实践
+├─ about/                        # 关于页
+├─ categories/                   # 分类页
+├─ tags/                         # 标签页
+└─ guide/                        # 本使用指南页面
+</code></pre>
+<p>文章文件采用“二级目录 + 英文 slug”的方式命名，例如：</p>
+<pre><code class="text">source/_posts/multimodal-paper-notes/qwen-vl-paper-notes.md
+</code></pre>
+<p>如果文章启用了 <code>post_asset_folder: true</code>，则配套图片目录应与 Markdown 文件同名，例如：</p>
+<pre><code class="text">source/_posts/multimodal-paper-notes/qwen-vl-paper-notes/
+</code></pre>
+<h2 id="当前分类与标签建议"><a href="#当前分类与标签建议" class="headerlink" title="当前分类与标签建议"></a>当前分类与标签建议</h2><p>当前建议保留以下分类：</p>
+<ul>
+<li><code>博客维护</code></li>
+<li><code>大模型基础</code></li>
+<li><code>环境配置</code></li>
+<li><code>多模态论文</code></li>
+<li><code>多模态实践</code></li>
+</ul>
+<p>当前建议保留以下更粗粒度标签：</p>
+<ul>
+<li><code>Hexo</code></li>
+<li><code>博客维护</code></li>
+<li><code>LLM</code></li>
+<li><code>HuggingFace</code></li>
+<li><code>环境配置</code></li>
+<li><code>多模态</code></li>
+<li><code>论文阅读</code></li>
+<li><code>实验实践</code></li>
+<li><code>可视化</code></li>
+<li><code>Qwen</code></li>
+<li><code>Qwen-VL</code></li>
+<li><code>LLaVA</code></li>
+<li><code>CLIP</code></li>
+<li><code>SigLIP</code></li>
+<li><code>CUDA</code></li>
+<li><code>Anaconda</code></li>
+</ul>
+<h2 id="如何修改个人信息"><a href="#如何修改个人信息" class="headerlink" title="如何修改个人信息"></a>如何修改个人信息</h2><p>个人信息主要分布在以下两个位置：</p>
+<ol>
+<li>站点基础信息：根目录 <a href="/D:/Code/Blog/_config.yml"><code>_config.yml</code></a></li>
+<li>主题展示信息：<a href="/D:/Code/Blog/themes/particlex/_config.yml"><code>themes/particlex/_config.yml</code></a></li>
+</ol>
+<p>常见修改项如下：</p>
+<ul>
+<li>站点标题：<code>_config.yml</code> 中的 <code>title</code></li>
+<li>作者名称：<code>_config.yml</code> 中的 <code>author</code></li>
+<li>站点地址：<code>_config.yml</code> 中的 <code>url</code></li>
+<li>首页侧边栏简介：<code>themes/particlex/_config.yml</code> 中的 <code>card.description</code></li>
+<li>头像、背景图、加载图：<code>themes/particlex/_config.yml</code> 中的 <code>avatar</code>、<code>background</code>、<code>loading</code></li>
+<li>导航菜单：<code>themes/particlex/_config.yml</code> 中的 <code>menu</code></li>
+</ul>
+<p>“关于我”页面位于 <a href="/D:/Code/Blog/source/about/index.md"><code>source/about/index.md</code></a>，其中可以直接修改：</p>
+<ul>
+<li>姓名、学校、研究方向</li>
+<li>联系方式</li>
+<li>GitHub &#x2F; Google Scholar 链接</li>
+<li>个人简介、获奖情况、论文列表</li>
+</ul>
+<h2 id="如何创建新的博文"><a href="#如何创建新的博文" class="headerlink" title="如何创建新的博文"></a>如何创建新的博文</h2><p>建议先确定文章属于哪个分类目录，再创建文件。当前仓库更适合使用带 <code>path</code> 参数的方式新建文章：</p>
+<pre><code class="bash">hexo new post --path &quot;multimodal-paper-notes/new-post-slug&quot; &quot;文章标题&quot;
+</code></pre>
+<p>例如，在“多模态实践”分类下新建一篇文章：</p>
+<pre><code class="bash">hexo new post --path &quot;multimodal-practice/qwen-visual-debugging&quot; &quot;Qwen 视觉调试记录&quot;
+</code></pre>
+<p>执行后会生成：</p>
+<pre><code class="text">source/_posts/multimodal-practice/qwen-visual-debugging.md
+source/_posts/multimodal-practice/qwen-visual-debugging/
+</code></pre>
+<p>写作时建议补齐以下 front matter：</p>
+<pre><code class="yaml">---
+title: Qwen 视觉调试记录
+date: 2026-05-27 10:00:00
+tags:
+  - 多模态
+  - 实验实践
+  - Qwen
+categories:
+  - 多模态实践
+description: 简要说明文章内容。
+---
+</code></pre>
+<p>插图建议写成相对路径：</p>
+<pre><code class="markdown">![](./qwen-visual-debugging/figure-01.png)
+</code></pre>
+<h2 id="如何创建新的分类"><a href="#如何创建新的分类" class="headerlink" title="如何创建新的分类"></a>如何创建新的分类</h2><p>当前站点的“分类页”会自动根据文章 front matter 中的 <code>categories</code> 聚合生成，因此通常不需要额外手工创建分类页面。</p>
+<p>新增分类时建议按下面流程进行：</p>
+<ol>
+<li>在 <code>source/_posts/</code> 下新建一个对应的英文目录名，例如 <code>reading-notes/</code></li>
+<li>新文章统一放进该目录</li>
+<li>在文章 front matter 中把 <code>categories</code> 写成面向读者的中文分类名</li>
+</ol>
+<p>例如，如果要新增“工具使用”分类，可以这样做：</p>
+<pre><code class="text">source/_posts/tooling/
+</code></pre>
+<pre><code class="bash">hexo new post --path &quot;tooling/windows-terminal-tips&quot; &quot;Windows Terminal 使用技巧&quot;
+</code></pre>
+<pre><code class="yaml">categories:
+  - 工具使用
+</code></pre>
+<p>目录名负责仓库内部组织，<code>categories</code> 负责网站上的展示名称，两者可以不同，但建议长期保持稳定映射。</p>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><p>本地预览：</p>
+<pre><code class="bash">npm run clean
+npm run server
+</code></pre>
+<p>生成静态文件：</p>
+<pre><code class="bash">npm run clean
+npm run build
+</code></pre>
+<p>部署到 GitHub Pages：</p>
+<pre><code class="bash">npm run deploy
+</code></pre>
+<h2 id="主题与写作注意事项"><a href="#主题与写作注意事项" class="headerlink" title="主题与写作注意事项"></a>主题与写作注意事项</h2><ul>
+<li>当前主题为 <code>particlex</code>，主题配置文件位于 <a href="/D:/Code/Blog/themes/particlex/_config.yml"><code>themes/particlex/_config.yml</code></a></li>
+<li>当前仓库已经启用 <code>post_asset_folder: true</code>，文章图片请放在与文章同名的资源目录中</li>
+<li>根配置里已关闭 Hexo 默认代码高亮，改由主题中的 Highlight.js 配置负责渲染</li>
+<li>如果修改了导航、头像或首页信息，建议本地先执行 <code>npm run server</code> 检查显示效果</li>
+</ul>
+
     </div>
     
     

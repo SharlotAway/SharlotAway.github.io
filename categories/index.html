@@ -13,35 +13,12 @@
     />
     <link rel="icon" href="/images/avatar_f.jpg" />
     <link rel="preconnect" href="https://s4.zstatic.net" />
-<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<script defer src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
 <link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-<link rel="preconnect" href="https://fonts.googleapis.cn" />
-<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
-<link
-    rel="stylesheet"
-    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
-/>
 <script> const mixins = {}; </script>
 
-<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
 
 
-<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
-<link
-    rel="stylesheet"
-    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
-/>
-<script src="/js/lib/highlight.js"></script>
-
-
-<script src="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-<script src="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
-<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/KaTeX/0.16.9/katex.min.css" />
-<script src="/js/lib/math.js"></script>
-
-
-<script src="/js/lib/preview.js"></script>
 
 
 
@@ -53,7 +30,7 @@
 <body>
     <div id="layout">
         <transition name="fade">
-            <div id="loading" v-show="loading">
+            <div id="loading" v-show="loading" style="display: none">
                 <div id="loading-circle">
                     <h2>LOADING</h2>
                     <p>加载较慢时，请确认浏览器已开启缓存。</p>
@@ -75,6 +52,11 @@
         <a href="/about/">
             <i class="fa-solid fa-id-card fa-fw"></i>
             <span>&ensp;关于</span>
+        </a>
+        
+        <a href="/guide/">
+            <i class="fa-solid fa-compass-drafting fa-fw"></i>
+            <span>&ensp;指南</span>
         </a>
         
         <a href="/archives/">
@@ -121,6 +103,15 @@
                             <i class="fa-solid fa-id-card fa-fw"></i>
                         </div>
                         <div style="min-width: 100px; max-width: 150%; width: 20%">关于</div>
+                    </div>
+                </a>
+                
+                <a href="/guide/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-compass-drafting fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">指南</div>
                     </div>
                 </a>
                 
@@ -176,11 +167,22 @@
         
         
         <span>
-            <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="background: #00bcd4">
+            <a href="/categories/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" style="background: #00a596">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
-                博客搭建
+                环境配置
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/categories/%E5%8D%9A%E5%AE%A2%E7%BB%B4%E6%8A%A4/" style="background: #ffa2c4">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                博客维护
             </a>
         </span>
         
@@ -198,33 +200,22 @@
         
         
         <span>
-            <a href="/categories/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" style="background: #03a9f4">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                环境配置
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80/" style="background: #ff7d73">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                大模型基础
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/categories/%E5%A4%9A%E6%A8%A1%E6%80%81%E5%AE%9E%E8%B7%B5/" style="background: #03a9f4">
+            <a href="/categories/%E5%A4%9A%E6%A8%A1%E6%80%81%E5%AE%9E%E8%B7%B5/" style="background: #00bcd4">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
                 多模态实践
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80/" style="background: #03a9f4">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                大模型基础
             </a>
         </span>
         
@@ -253,14 +244,8 @@
 
         </div>
         
-        <transition name="fade">
-            <div id="preview" ref="preview" v-show="previewShow">
-                <img id="preview-content" ref="previewContent" />
-            </div>
-        </transition>
-        
     </div>
-    <script src="/js/main.js"></script>
+    <script defer src="/js/main.js"></script>
     
 </body>
 </html>

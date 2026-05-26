@@ -11,9 +11,17 @@ const app = Vue.createApp({
         };
     },
     created() {
-        window.addEventListener("load", () => {
+        const finishLoading = () => {
             this.loading = false;
-        });
+        };
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", finishLoading, { once: true });
+        } else {
+            finishLoading();
+        }
+
+        window.setTimeout(finishLoading, 1200);
     },
     mounted() {
         window.addEventListener("scroll", this.handleScroll, true);
